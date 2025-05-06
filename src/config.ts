@@ -17,7 +17,6 @@ import fs from 'fs/promises';
  * Application constants
  */
 export const APP_NAME = 'AgentPM';
-export const APP_VERSION = '0.1.0';
 export const DEBUG = process.env.DEBUG === 'true';
 
 /** API keys */

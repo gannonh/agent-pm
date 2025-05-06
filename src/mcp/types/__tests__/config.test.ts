@@ -8,7 +8,6 @@ import {
 } from '../../../types/config.js';
 import {
   APP_NAME,
-  APP_VERSION,
   ARTIFACTS_DIR,
   ARTIFACTS_FILE,
   ANTHROPIC_TEMPERATURE,
@@ -18,7 +17,7 @@ import {
 // Create a test configuration object based on the constants from config.ts
 const testConfig: AppConfig = {
   projectName: APP_NAME,
-  projectVersion: APP_VERSION,
+  projectVersion: '0.1.0', // Hardcoded version for testing
   defaultSubtasks: 5,
   defaultPriority: 'medium',
   ai: {
@@ -47,7 +46,7 @@ const testConfig: AppConfig = {
   debug: false,
   project: {
     name: APP_NAME,
-    version: APP_VERSION,
+    version: '0.1.0', // Hardcoded version for testing
   },
 };
 
