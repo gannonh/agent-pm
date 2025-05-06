@@ -97,11 +97,6 @@ jobs:
             echo "is_higher=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          slug: gannonh/agent-pm
-
       - name: Publish to npm
         if: steps.check_version.outputs.is_higher == 'true'
         run: npm publish --access public
