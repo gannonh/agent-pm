@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -43,3 +43,71 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: gannonh/agent-pm
+
+  publish:
+    name: Publish to npm
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: |
+          rm -rf node_modules
+          rm -f package-lock.json
+          npm install
+
+      - name: Build package
+        run: npm run build
+
+      - name: Set executable permissions
+        run: chmod +x dist/*.js
+
+      - name: Check version and determine if publish is needed
+        id: check_version
+        run: |
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version in package.json: $CURRENT_VERSION"
+
+          # Get latest version from npm (if it exists)
+          if LATEST_VERSION=$(npm view @gannonh/firebase-mcp version 2>/dev/null); then
+            echo "Latest published version: $LATEST_VERSION"
+
+            # Compare versions using node
+            IS_HIGHER=$(node -e "const semver = require('semver'); console.log(semver.gt('$CURRENT_VERSION', '$LATEST_VERSION') ? 'true' : 'false')")
+            echo "is_higher=$IS_HIGHER" >> $GITHUB_OUTPUT
+
+            if [ "$IS_HIGHER" = "true" ]; then
+              echo "Current version is higher than latest published version. Proceeding with publish."
+            else
+              echo "Current version is not higher than latest published version. Skipping publish."
+            fi
+          else
+            echo "No published version found. This appears to be the first publish."
+            echo "is_higher=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          slug: gannonh/agent-pm
+
+      - name: Publish to npm
+        if: steps.check_version.outputs.is_higher == 'true'
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Skip publish - version not higher
+        if: steps.check_version.outputs.is_higher != 'true'
+        run: echo "✅ Build successful but publish skipped - current version is not higher than the latest published version."
