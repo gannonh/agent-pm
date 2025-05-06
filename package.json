@@ -1,0 +1,66 @@
+{
+  "name": "agent-pm",
+  "version": "0.1.0",
+  "description": "Planning and orchestration for AI-driven software development",
+  "author": "Gannon Hall",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "agent-pm": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "watch": "tsc --watch",
+    "test": "vitest run --config vitest.config.ts",
+    "test:coverage": "vitest run --coverage --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:coverage": "vitest run --coverage --config vitest.integration.config.ts",
+    "test:integration:watch": "vitest --config vitest.integration.config.ts",
+    "test:all-coverage": "vitest run --coverage && vitest run --coverage --config vitest.integration.config.ts",
+    "lint": "eslint src --ext ts,tsx && tsc --noEmit",
+    "lint:fix": "eslint src --ext ts,tsx --fix && prettier --write \"src/**/*.{ts,tsx}\"",
+    "lint:strict": "eslint src --ext ts,tsx --max-warnings 0",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
+    "preflight": "npm run lint:fix && npm run test:integration && npm run test:coverage && npm run build",
+    "sync-coverage": "node scripts/sync-coverage-thresholds.js",
+    "fix-imports": "node scripts/fix-imports.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.1",
+    "@modelcontextprotocol/sdk": "^1.11.0",
+    "dotenv": "^16.3.1",
+    "lru-cache": "^11.1.0",
+    "openai": "^4.97.0",
+    "ora": "^8.2.0",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.26.0",
+    "@types/node": "^22.15.8",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.32.0",
+    "@typescript-eslint/parser": "^8.32.0",
+    "@vitest/coverage-v8": "^3.1.3",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.4.0",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.0",
+    "vitest": "^3.1.3"
+  }
+}
