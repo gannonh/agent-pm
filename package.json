@@ -1,5 +1,5 @@
 {
-  "name": "agent-pm",
+  "name": "@gannonh/agent-pm",
   "version": "0.1.0",
   "description": "Planning and orchestration for AI-driven software development",
   "author": "Gannon Hall",
