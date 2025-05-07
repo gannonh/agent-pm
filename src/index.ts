@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { registerTools } from './mcp/tools/index.js';
 import { registerResources } from './mcp/resources/index.js';
 import { registerPrompts } from './mcp/prompts/index.js';

@@ -70,7 +70,9 @@ jobs:
         run: npm run build
 
       - name: Set executable permissions
-        run: chmod +x dist/*.js
+        run: |
+          chmod +x dist/*.js
+          ls -la dist/*.js
 
       - name: Check version and determine if publish is needed
         id: check_version
