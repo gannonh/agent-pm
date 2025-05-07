@@ -88,7 +88,8 @@ const formatLogMessage = (level: string, message: string, args?: unknown[]): str
               }
               seen.add(value);
             }
-            return value;
+            // Use explicit type assertion to avoid 'any' return type
+            return value as unknown;
           },
           2
         );
@@ -121,7 +122,6 @@ export const logger = {
     writeToFile(fullMessage);
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   debug: (message: string, meta?: Record<string, unknown>) => {
     // Handle both formats: debug(message) and debug(message, {metadata})
     const args = meta ? [meta] : [];

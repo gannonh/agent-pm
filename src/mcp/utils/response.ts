@@ -332,7 +332,8 @@ export function createEnhancedResponse(options: EnhancedResponseOptions): string
           }
           seen.add(value);
         }
-        return value;
+        // Use explicit type assertion to avoid 'any' return type
+        return value as unknown;
       });
     };
 
