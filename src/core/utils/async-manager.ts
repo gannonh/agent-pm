@@ -296,7 +296,12 @@ export class AsyncOperationManager {
     if (operation && operation.reportProgress) {
       try {
         operation.reportProgress(progress);
-        this.log(operationId, 'debug', `Reported progress: ${JSON.stringify(progress)}`);
+        this.log(operationId, 'debug', `Reported progress: ${progress.progress}%`, {
+          progress: {
+            percentage: progress.progress,
+            message: progress.message,
+          },
+        });
       } catch (err: unknown) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error';
 
@@ -358,9 +363,17 @@ export class AsyncOperationManager {
     meta: Record<string, unknown> = {}
   ): void {
     const operation = this.operations.get(operationId);
-    const logger = operation?.log || console;
-    const logFn = logger[level] || logger.log || console.log;
-    logFn(`[AsyncOp ${operationId}] ${message}`, meta);
+    const logger = operation?.log;
+
+    // Only log if we have a logger
+    if (logger && typeof logger[level] === 'function') {
+      // Create a prefixed message
+      const prefixedMessage = `[AsyncOp ${operationId}] ${message}`;
+
+      // Always pass meta as an object to ensure consistent handling
+      logger[level](prefixedMessage, meta);
+    }
+    // No fallback - if logger doesn't exist, we don't log
   }
 
   /**

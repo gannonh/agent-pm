@@ -51,8 +51,8 @@ vi.mock('../../../config.js', () => ({
   },
   // Add the PROJECT_ROOT constant
   PROJECT_ROOT: '/env/project/root',
-  // Add DEBUG flag
-  DEBUG: false,
+  // Add DEBUG_LOGS flag
+  DEBUG_LOGS: false,
 }));
 
 // Import the module under test after mocking dependencies

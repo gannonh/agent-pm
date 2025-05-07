@@ -83,7 +83,7 @@ const mocks = vi.hoisted(() => ({
   config: {
     getProjectRoot: vi.fn().mockReturnValue('/project/root'),
     getArtifactsFile: vi.fn().mockReturnValue('/project/root/apm-artifacts/artifacts.json'),
-    DEBUG: false, // Add DEBUG flag
+    DEBUG_LOGS: false, // Add DEBUG_LOGS flag
   },
 }));
 

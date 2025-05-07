@@ -5,6 +5,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import { searchLibraries, fetchLibraryDocumentation } from './lib/api.js';
 import { formatSearchResults } from './lib/utils.js';
+import { logger } from '../mcp/utils/logger.js';
 
 const DEFAULT_MINIMUM_TOKENS = 5000;
 
@@ -129,10 +130,10 @@ server.tool(
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('Context7 Documentation MCP Server running on stdio');
+  logger.info('Context7 Documentation MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error('Fatal error in main():', error);
+  logger.error('Fatal error in main():', error);
   process.exit(1);
 });

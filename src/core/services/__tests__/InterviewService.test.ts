@@ -303,7 +303,7 @@ vi.mock('../../../config.js', () => {
       getArtifactsDir: vi.fn().mockReturnValue('/mock/project/apm-artifacts'),
     },
     PROJECT_ROOT: '/mock/project',
-    DEBUG: false, // Add DEBUG flag
+    DEBUG_LOGS: false, // Add DEBUG_LOGS flag
   };
 });
 

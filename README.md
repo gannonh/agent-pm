@@ -64,7 +64,7 @@ Add the following to your project's `.cursor/mcp.json` file (or install globally
             "PROJECT_ROOT": "/path/to/project/root/",
             "ANTHROPIC_API_KEY": "sk-your-anthropic-api-key",
             "PERPLEXITY_API_KEY": "pplx-your-perplexity-api-key",
-            "DEBUG": "true"
+            "DEBUG_LOGS": "true"
           }
         }
     }
@@ -90,7 +90,7 @@ Add the following to your VS-Code Augment User Settings file (CMD+SHIFT+P > Augm
             "PROJECT_ROOT": "/path/to/project/root/",
             "ANTHROPIC_API_KEY": "sk-your-anthropic-api-key",
             "PERPLEXITY_API_KEY": "pplx-your-perplexity-api-key",
-            "DEBUG": "true"
+            "DEBUG_LOGS": "true"
           }
     },
   ]
@@ -120,7 +120,7 @@ For more information on MCP server configuration, refer to the documentation for
 | Variable             | Description                           | Default |
 | -------------------- | ------------------------------------- | ------- |
 | `PERPLEXITY_API_KEY` | API key for Perplexity AI integration | None    |
-| `DEBUG`              | Enable debug mode with file logging   | false   |
+| `DEBUG_LOGS`         | Enable debug mode with file logging   | false   |
 
 #### Advanced Configuration (Not Recommended to Change)
 
@@ -158,13 +158,13 @@ For more information on MCP server configuration, refer to the documentation for
 
 ### Debug Mode
 
-Setting `DEBUG=true` enables:
+Setting `DEBUG_LOGS=true` enables:
 
 - Detailed logging to files in the `logs` directory
 - Log files named with timestamps (e.g., `apm-2025-05-04-18-16.log`)
 - Useful for troubleshooting API integrations and complex operations
 
-When `DEBUG=false` (default):
+When `DEBUG_LOGS=false` (default):
 - No log files are created
 - Essential messages are still output to stderr
 - Improved performance for normal operation
