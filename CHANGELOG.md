@@ -5,6 +5,14 @@ All notable changes to AgentPM will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2025-05-07
+
+### Fixed
+
+- Changed debug environment variable from `DEBUG` to `DEBUG_LOGS` to avoid conflicts with the Anthropic SDK
+- Fixed JSON parsing errors in MCP protocol when debug logging is enabled
+- Updated all tests to use the new environment variable name
+
 ## [0.1.1] - 2025-05-07
 
 ### Fixed
