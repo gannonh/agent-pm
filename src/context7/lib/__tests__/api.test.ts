@@ -3,16 +3,21 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 // Create mocks with vi.hoisted
 const mocks = vi.hoisted(() => ({
   fetch: vi.fn(),
-  console: {
+  logger: {
     error: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
   },
 }));
 
 // Mock global fetch
 vi.stubGlobal('fetch', mocks.fetch);
 
-// Mock console.error - this is the key part that needs to be fixed
-console.error = mocks.console.error;
+// Mock the logger
+vi.mock('../../../mcp/utils/logger.js', () => ({
+  logger: mocks.logger,
+}));
 
 // Import the actual API module
 import * as actualApiModule from '../api.js';
@@ -26,12 +31,12 @@ const apiModule = {
       url.searchParams.set('query', query);
       const response = await mocks.fetch(url);
       if (!response.ok) {
-        mocks.console.error(`Failed to search libraries: ${response.status}`);
+        mocks.logger.error(`Failed to search libraries: ${response.status}`);
         return null;
       }
       return await response.json();
     } catch (error) {
-      mocks.console.error('Error searching libraries:', error);
+      mocks.logger.error('Error searching libraries:', error);
       return null;
     }
   },
@@ -59,7 +64,7 @@ const apiModule = {
         },
       });
       if (!response.ok) {
-        mocks.console.error(`Failed to fetch documentation: ${response.status}`);
+        mocks.logger.error(`Failed to fetch documentation: ${response.status}`);
         return null;
       }
       const text = await response.text();
@@ -68,7 +73,7 @@ const apiModule = {
       }
       return text;
     } catch (error) {
-      mocks.console.error('Error fetching library documentation:', error);
+      mocks.logger.error('Error fetching library documentation:', error);
       return null;
     }
   },
@@ -148,7 +153,7 @@ describe('Context7 API', () => {
 
       // Verify the result
       expect(result).toBeNull();
-      expect(mocks.console.error).toHaveBeenCalledWith('Failed to search libraries: 500');
+      expect(mocks.logger.error).toHaveBeenCalledWith('Failed to search libraries: 500');
     });
 
     it('should handle error cases in fetchLibraryDocumentation directly', async () => {
@@ -163,7 +168,7 @@ describe('Context7 API', () => {
 
       // Verify the result
       expect(result).toBeNull();
-      expect(mocks.console.error).toHaveBeenCalledWith('Failed to fetch documentation: 500');
+      expect(mocks.logger.error).toHaveBeenCalledWith('Failed to fetch documentation: 500');
     });
 
     it('should handle network errors in searchLibraries directly', async () => {
@@ -176,7 +181,7 @@ describe('Context7 API', () => {
 
       // Verify the result
       expect(result).toBeNull();
-      expect(mocks.console.error).toHaveBeenCalledWith('Error searching libraries:', networkError);
+      expect(mocks.logger.error).toHaveBeenCalledWith('Error searching libraries:', networkError);
     });
 
     it('should handle network errors in fetchLibraryDocumentation directly', async () => {
@@ -189,7 +194,7 @@ describe('Context7 API', () => {
 
       // Verify the result
       expect(result).toBeNull();
-      expect(mocks.console.error).toHaveBeenCalledWith(
+      expect(mocks.logger.error).toHaveBeenCalledWith(
         'Error fetching library documentation:',
         networkError
       );
@@ -270,7 +275,7 @@ describe('Context7 API', () => {
       expect(result).toBeNull();
 
       // Verify error was logged
-      expect(mocks.console.error).toHaveBeenCalledWith('Failed to search libraries: 404');
+      expect(mocks.logger.error).toHaveBeenCalledWith('Failed to search libraries: 404');
     });
 
     it('should return null when the fetch throws an error', async () => {
@@ -284,7 +289,7 @@ describe('Context7 API', () => {
       expect(result).toBeNull();
 
       // Verify error was logged
-      expect(mocks.console.error).toHaveBeenCalledWith(
+      expect(mocks.logger.error).toHaveBeenCalledWith(
         'Error searching libraries:',
         expect.any(Error)
       );
@@ -463,7 +468,7 @@ describe('Context7 API', () => {
       expect(result).toBeNull();
 
       // Verify error was logged
-      expect(mocks.console.error).toHaveBeenCalledWith('Failed to fetch documentation: 404');
+      expect(mocks.logger.error).toHaveBeenCalledWith('Failed to fetch documentation: 404');
     });
 
     it('should return null when the fetch throws an error', async () => {
@@ -477,7 +482,7 @@ describe('Context7 API', () => {
       expect(result).toBeNull();
 
       // Verify error was logged
-      expect(mocks.console.error).toHaveBeenCalledWith(
+      expect(mocks.logger.error).toHaveBeenCalledWith(
         'Error fetching library documentation:',
         expect.any(Error)
       );

@@ -45,7 +45,7 @@ const mocks = vi.hoisted(() => ({
     PRODUCT_BRIEF_FILE: 'project-brief.md',
     ANTHROPIC_TEMPERATURE: 0.2,
     ANTHROPIC_MAX_TOKENS: 4000,
-    DEBUG: false, // Add DEBUG flag
+    DEBUG_LOGS: false, // Add DEBUG_LOGS flag
   },
 }));
 
