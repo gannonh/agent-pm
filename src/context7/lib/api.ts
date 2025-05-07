@@ -1,4 +1,5 @@
 import { SearchResponse } from './types.js';
+import { logger } from '../../mcp/utils/logger.js';
 
 const CONTEXT7_API_BASE_URL = 'https://context7.com/api';
 const DEFAULT_TYPE = 'txt';
@@ -14,12 +15,12 @@ export async function searchLibraries(query: string): Promise<SearchResponse | n
     url.searchParams.set('query', query);
     const response = await fetch(url);
     if (!response.ok) {
-      console.error(`Failed to search libraries: ${response.status}`);
+      logger.error(`Failed to search libraries: ${response.status}`);
       return null;
     }
     return (await response.json()) as SearchResponse;
   } catch (error) {
-    console.error('Error searching libraries:', error);
+    logger.error('Error searching libraries:', error);
     return null;
   }
 }
@@ -53,7 +54,7 @@ export async function fetchLibraryDocumentation(
       },
     });
     if (!response.ok) {
-      console.error(`Failed to fetch documentation: ${response.status}`);
+      logger.error(`Failed to fetch documentation: ${response.status}`);
       return null;
     }
     const text = await response.text();
@@ -62,7 +63,7 @@ export async function fetchLibraryDocumentation(
     }
     return text;
   } catch (error) {
-    console.error('Error fetching library documentation:', error);
+    logger.error('Error fetching library documentation:', error);
     return null;
   }
 }

@@ -242,9 +242,9 @@ vi.mock('../../config.js', () => ({
   default: {
     getProjectRoot: vi.fn().mockReturnValue('/project/root'),
     getArtifactsFile: vi.fn().mockReturnValue('/project/root/apm-artifacts/artifacts.json'),
-    DEBUG: false,
+    DEBUG_LOGS: false,
   },
-  DEBUG: false,
+  DEBUG_LOGS: false,
 }));
 
 describe('Task Generator Minimal Test', () => {

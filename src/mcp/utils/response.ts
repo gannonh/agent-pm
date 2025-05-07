@@ -320,7 +320,38 @@ export function createEnhancedResponse(options: EnhancedResponseOptions): string
     };
   }
 
-  return JSON.stringify(response);
+  // Use a safer JSON stringify with circular reference handling
+  try {
+    const safeStringify = (obj: unknown): string => {
+      const seen = new WeakSet();
+      return JSON.stringify(obj, (key, value) => {
+        // Handle circular references
+        if (typeof value === 'object' && value !== null) {
+          if (seen.has(value)) {
+            return '[Circular Reference]';
+          }
+          seen.add(value);
+        }
+        return value;
+      });
+    };
+
+    return safeStringify(response);
+  } catch (error) {
+    // If JSON.stringify fails, try a more aggressive approach
+    logger.error('Error stringifying response', { error });
+
+    // Create a simplified response without potentially problematic fields
+    const safeResponse = {
+      success: response.success,
+      data: typeof response.data === 'object' ? { ...response.data } : response.data,
+      message: response.message,
+      timestamp: response.timestamp,
+      requestId: response.requestId,
+    };
+
+    return JSON.stringify(safeResponse);
+  }
 }
 
 /**

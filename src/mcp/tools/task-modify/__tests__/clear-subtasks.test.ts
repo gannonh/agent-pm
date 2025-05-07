@@ -135,7 +135,7 @@ const mocks = vi.hoisted(() => {
         TASK_COMPLEXITY_REPORT_MARKDOWN_FILE: 'task-complexity-report.md',
         ARTIFACTS_FILE: 'artifacts.json',
         PROJECT_BRIEF_MARKDOWN_FILE: 'project-brief.md',
-        DEBUG: false, // Add DEBUG flag
+        DEBUG_LOGS: false, // Add DEBUG_LOGS flag
       },
       getArtifactsFile: vi.fn().mockReturnValue('/mock/project/artifacts.json'),
       getProjectRoot: vi.fn().mockReturnValue('/mock/project'),

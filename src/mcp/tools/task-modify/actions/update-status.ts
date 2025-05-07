@@ -54,10 +54,7 @@ export async function handleUpdateStatus(
   for (const taskId of taskIds) {
     try {
       logger.debug('Processing task ID:', { taskId });
-      logger.debug(
-        'Task list:',
-        taskList.map((t) => ({ id: t.id, type: typeof t.id }))
-      );
+      logger.debug('Task list:', { tasks: taskList.map((t) => ({ id: t.id, type: typeof t.id })) });
 
       // Check if the ID is a subtask ID (format: parentId.subtaskId)
       if (taskId.includes('.')) {

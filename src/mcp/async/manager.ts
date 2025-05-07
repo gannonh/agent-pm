@@ -18,14 +18,17 @@ import {
   mapFromCoreStatus,
 } from './types.js';
 
+import { logger } from '../utils/logger.js';
+
 /**
- * Default logger implementation that uses console
+ * Default logger implementation that uses the custom logger
+ * to avoid writing to stdout which breaks MCP protocol
  */
 const defaultLogger: Logger = {
-  debug: (message: string, meta?: Record<string, unknown>) => console.debug(message, meta),
-  info: (message: string, meta?: Record<string, unknown>) => console.info(message, meta),
-  warn: (message: string, meta?: Record<string, unknown>) => console.warn(message, meta),
-  error: (message: string, meta?: Record<string, unknown>) => console.error(message, meta),
+  debug: (message: string, meta?: Record<string, unknown>) => logger.debug(message, meta),
+  info: (message: string, meta?: Record<string, unknown>) => logger.info(message, meta),
+  warn: (message: string, meta?: Record<string, unknown>) => logger.warn(message, meta),
+  error: (message: string, meta?: Record<string, unknown>) => logger.error(message, meta),
 };
 
 /**
@@ -221,17 +224,17 @@ export class McpAsyncOperationManager {
    */
   updateOperationProgress(operationId: string, progress: number, message?: string): void {
     // Log the input parameters
-    console.log(
-      `[DEBUG] updateOperationProgress called with: operationId=${operationId}, progress=${progress}, message=${message}`
+    logger.debug(
+      `updateOperationProgress called with: operationId=${operationId}, progress=${progress}, message=${message}`
     );
 
     const metadata = this.operationMetadata.get(operationId);
     if (!metadata) {
-      console.log(`[DEBUG] No metadata found for operation ${operationId}`);
+      logger.debug(`No metadata found for operation ${operationId}`);
       return;
     }
 
-    console.log(`[DEBUG] Current metadata for operation ${operationId}:`, metadata);
+    logger.debug(`Current metadata for operation ${operationId}`, { metadata });
 
     // Update the metadata
     this.operationMetadata.set(operationId, {
@@ -242,7 +245,7 @@ export class McpAsyncOperationManager {
 
     // Log the updated metadata
     const updatedMetadata = this.operationMetadata.get(operationId);
-    console.log(`[DEBUG] Updated metadata for operation ${operationId}:`, updatedMetadata);
+    logger.debug(`Updated metadata for operation ${operationId}`, { metadata: updatedMetadata });
   }
 
   /**

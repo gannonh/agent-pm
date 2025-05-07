@@ -17,7 +17,8 @@ import fs from 'fs/promises';
  * Application constants
  */
 export const APP_NAME = 'AgentPM';
-export const DEBUG = process.env.DEBUG === 'true';
+// Using DEBUG_LOGS environment variable to avoid conflicts with Anthropic SDK's DEBUG
+export const DEBUG_LOGS = process.env.DEBUG_LOGS === 'true';
 
 /** API keys */
 export const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;

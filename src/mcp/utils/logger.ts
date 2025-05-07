@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { PROJECT_ROOT, DEBUG } from '../../config.js';
+import { PROJECT_ROOT, DEBUG_LOGS } from '../../config.js';
 
 /**
- * Simple logger utility that writes to stderr and a log file (if DEBUG=true)
+ * Simple logger utility that writes to stderr and a log file (if DEBUG_LOGS=true)
  * to avoid interfering with MCP stdio while providing better debugging
  */
 
@@ -11,8 +11,8 @@ import { PROJECT_ROOT, DEBUG } from '../../config.js';
 let logsDir: string;
 let logFilePath: string;
 
-// Only set up file logging if DEBUG is true
-if (DEBUG) {
+// Only set up file logging if DEBUG_LOGS is true
+if (DEBUG_LOGS) {
   // Set up the logs directory
   logsDir = path.join(PROJECT_ROOT, 'logs');
   process.stderr.write(`[DEBUG] Using logs directory: ${logsDir}\n`);
@@ -37,12 +37,12 @@ if (DEBUG) {
 }
 
 /**
- * Write a message to the log file if DEBUG is true
+ * Write a message to the log file if DEBUG_LOGS is true
  * @param message - The message to write
  */
 const writeToFile = (message: string): void => {
-  // Skip file writing if DEBUG is false
-  if (!DEBUG) {
+  // Skip file writing if DEBUG_LOGS is false
+  if (!DEBUG_LOGS) {
     return;
   }
 
@@ -75,7 +75,29 @@ const formatLogMessage = (level: string, message: string, args?: unknown[]): str
   let logMessage = `[${timestamp}] [${level}] ${message}`;
 
   if (args && args.length > 0) {
-    logMessage += `\n${JSON.stringify(args, null, 2)}`;
+    try {
+      // Use a safer JSON stringify with circular reference handling
+      const safeStringify = (obj: unknown): string => {
+        const seen = new WeakSet();
+        return JSON.stringify(
+          obj,
+          (key, value) => {
+            if (typeof value === 'object' && value !== null) {
+              if (seen.has(value)) {
+                return '[Circular Reference]';
+              }
+              seen.add(value);
+            }
+            return value;
+          },
+          2
+        );
+      };
+
+      logMessage += `\n${safeStringify(args)}`;
+    } catch (error) {
+      logMessage += `\n[Error serializing args: ${error instanceof Error ? error.message : String(error)}]`;
+    }
   }
 
   return logMessage;
@@ -100,7 +122,9 @@ export const logger = {
   },
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  debug: (message: string, ...args: any[]) => {
+  debug: (message: string, meta?: Record<string, unknown>) => {
+    // Handle both formats: debug(message) and debug(message, {metadata})
+    const args = meta ? [meta] : [];
     const logMessage = formatLogMessage('DEBUG', message, args);
     process.stderr.write(`${logMessage}\n`);
     writeToFile(logMessage);
