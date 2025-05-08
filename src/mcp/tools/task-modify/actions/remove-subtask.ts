@@ -27,8 +27,14 @@ export async function handleRemoveSubtask(
     projectRoot: schemas.projectRoot,
     id: z
       .string()
-      .min(1, 'Subtask ID is required')
-      .describe('ID of the subtask to remove (e.g., "5.2")'),
+      .min(1, 'Task ID is required')
+      .describe(
+        'ID of the subtask to remove (e.g., "5.2") or parent task ID when using taskId parameter'
+      ),
+    taskId: z
+      .string()
+      .optional()
+      .describe('Subtask ID within the parent task (when not using dot notation)'),
     convert: z
       .boolean()
       .optional()
@@ -40,7 +46,7 @@ export async function handleRemoveSubtask(
 
   // Validate parameters
   const validatedParams = validateParams(params, removeSubtaskSchema);
-  const { id, convert, skipGenerate, file } = validatedParams;
+  const { id, taskId, convert, skipGenerate, file } = validatedParams;
 
   // Read tasks from file
   const tasksData = await readTasksFile(projectRoot, file);
@@ -48,16 +54,28 @@ export async function handleRemoveSubtask(
     throw new MCPNotFoundError('Tasks file not found or is empty');
   }
 
-  // Check if the ID is a subtask ID (format: parentId.subtaskId)
-  if (!id.includes('.')) {
+  let parentId: string;
+  let subtaskIndex: string;
+  let subtaskIndexNumber: number;
+
+  // Handle both formats: either id="parentId.subtaskId" or id="parentId" with taskId="subtaskId"
+  if (id.includes('.')) {
+    // Format: parentId.subtaskId
+    [parentId, subtaskIndex] = id.split('.');
+    subtaskIndexNumber = parseInt(subtaskIndex, 10) - 1; // Convert to 0-based index
+  } else if (taskId) {
+    // Format: id=parentId, taskId=subtaskId
+    parentId = id;
+    subtaskIndex = taskId;
+    subtaskIndexNumber = parseInt(subtaskIndex, 10) - 1; // Convert to 0-based index
+  } else {
+    // Neither format provided
     throw new MCPValidationError('Invalid subtask ID format. Expected format: parentId.subtaskId', {
-      id: ['Subtask ID must be in the format parentId.subtaskId (e.g., "5.2")'],
+      id: [
+        'Subtask ID must be in the format parentId.subtaskId (e.g., "5.2") or provide both id and taskId parameters',
+      ],
     });
   }
-
-  // Parse the parent ID and subtask index
-  const [parentId, subtaskIndex] = id.split('.');
-  const subtaskIndexNumber = parseInt(subtaskIndex, 10) - 1; // Convert to 0-based index
 
   // Find the parent task
   const parentTask = tasksData.tasks.find((task) => String(task.id) === parentId);
@@ -122,7 +140,13 @@ export async function handleRemoveSubtask(
 
   // Generate task files if not skipped
   if (!skipGenerate) {
-    await generateTaskFiles(tasksData, projectRoot);
+    // Generate task files
+    const filesGenerated = await generateTaskFiles(tasksData, projectRoot);
+    if (!filesGenerated) {
+      logger.error('Failed to generate task files');
+    } else {
+      logger.debug('Task files generated successfully');
+    }
 
     // Update the project brief markdown file
     try {
@@ -139,6 +163,9 @@ export async function handleRemoveSubtask(
     }
   }
 
+  // Create the full subtask ID for the response message
+  const fullSubtaskId = id.includes('.') ? id : `${parentId}.${subtaskIndex}`;
+
   // Return success response
   return create_success_payload(
     {
@@ -147,12 +174,12 @@ export async function handleRemoveSubtask(
       tasksPath: file || Config.getArtifactsFile(projectRoot),
     },
     convert
-      ? `Converted subtask ${id} to standalone task`
-      : `Removed subtask ${id} from task ${parentId}`,
+      ? `Converted subtask ${fullSubtaskId} to standalone task`
+      : `Removed subtask ${fullSubtaskId} from task ${parentId}`,
     {
       context: {
         parentTaskId: parentId,
-        subtaskId: id,
+        subtaskId: fullSubtaskId,
         timestamp: new Date().toISOString(),
         converted: convert,
       },

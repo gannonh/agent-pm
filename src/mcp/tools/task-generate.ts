@@ -12,6 +12,7 @@ import { create_success_payload } from '../utils/response.js';
 import { MCPError } from '../errors/index.js';
 import { ErrorCode } from '../../types/errors.js';
 import Config, { ARTIFACTS_DIR, ARTIFACTS_FILE } from '../../config.js';
+import { logger } from '../utils/logger.js';
 
 /**
  * Registers the generate tool with the MCP server.
@@ -64,6 +65,35 @@ export function registerGenerateTool(server: McpServer): void {
         const tasksData = await readTasksFile(projectRoot, file);
         if (!tasksData) {
           throw new MCPError('Tasks file not found or is empty', ErrorCode.NOT_FOUND);
+        }
+
+        // Force regeneration of all task files
+        // First, delete all existing task files
+        try {
+          const fs = await import('fs/promises');
+          const path = await import('path');
+          const artifactsDir = Config.getArtifactsDir(projectRoot);
+
+          // Get a list of all existing task files
+          const files = await fs.readdir(artifactsDir);
+          const taskFiles = files.filter(
+            (file) => file.startsWith('task_') && file.endsWith('.md')
+          );
+
+          // Delete all task files
+          for (const file of taskFiles) {
+            try {
+              const filePath = path.join(artifactsDir, file);
+              await fs.unlink(filePath);
+              logger.debug(`Deleted task file: ${filePath}`);
+            } catch (error) {
+              logger.error(`Error deleting task file ${file}:`, error);
+              // Continue with other files even if one deletion fails
+            }
+          }
+        } catch (error) {
+          logger.error(`Error cleaning up task files:`, error);
+          // Continue with generation even if cleanup fails
         }
 
         // Generate task files

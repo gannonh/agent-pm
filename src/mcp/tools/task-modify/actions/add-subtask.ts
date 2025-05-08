@@ -11,6 +11,8 @@ import Config, { PRODUCT_BRIEF_FILE } from '../../../../config.js';
 import { findDependentTasks } from '../utils/task-utils.js';
 import { generateMarkdown } from '../../../../core/services/project-brief-markdown.js';
 import { logger } from '../../../utils/logger.js';
+import fs from 'fs/promises';
+import path from 'path';
 
 /**
  * Interface for subtask properties
@@ -115,6 +117,16 @@ export async function handleAddSubtask(
     const taskIndex = tasksData.tasks.findIndex((task) => String(task.id) === taskId);
     if (taskIndex !== -1) {
       tasksData.tasks.splice(taskIndex, 1);
+
+      // Delete the task file
+      try {
+        const taskFilePath = Config.getArtifactFilePath(taskId, projectRoot);
+        await fs.unlink(taskFilePath);
+        logger.debug(`Deleted task file for converted task: ${taskFilePath}`);
+      } catch (error) {
+        // Log the error but don't fail the operation
+        logger.error(`Error deleting task file for converted task ${taskId}:`, error);
+      }
     }
   } else {
     // Create a new subtask

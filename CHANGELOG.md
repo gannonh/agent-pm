@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Path Validation**: Added handling for quoted paths in PROJECT_ROOT environment variable. This fixes an issue where paths with special characters (like '+') could be incorrectly encoded, causing "No ready tasks found" errors when the path actually contained quotes.
+- **Task File Management**: Fixed issue with subtask management where task files weren't properly regenerated when removing subtasks. Ensured that all markdown files are deleted and regenerated whenever tasks are modified, preventing orphaned files and ensuring consistency between JSON data and markdown files.
 
 ## [0.1.2] - 2025-05-07
 
