@@ -302,6 +302,22 @@ export function createFilePathSchema(description: string, isRequired = true) {
 }
 
 /**
+ * Removes quotes from a string if present
+ * @param str String that might have quotes
+ * @returns String without quotes
+ */
+function removeQuotes(str: string): string {
+  if (!str) return str;
+
+  // Remove both single and double quotes if they wrap the entire string
+  if ((str.startsWith('"') && str.endsWith('"')) || (str.startsWith("'") && str.endsWith("'"))) {
+    return str.substring(1, str.length - 1);
+  }
+
+  return str;
+}
+
+/**
  * Gets the project root from the request parameters or environment variable
  * @param projectRoot Project root from request parameters (can be string, null, or undefined)
  * @returns Project root directory path
@@ -309,13 +325,23 @@ export function createFilePathSchema(description: string, isRequired = true) {
  */
 export function getProjectRoot(projectRoot?: string | null): string {
   // Use the provided value or fall back to the environment variable
-  const envProjectRoot = PROJECT_ROOT;
+  let envProjectRoot = PROJECT_ROOT;
+
+  // Remove quotes from environment variable if present
+  envProjectRoot = removeQuotes(envProjectRoot);
+
   logger.debug('Environment PROJECT_ROOT:', { envProjectRoot });
 
-  // Handle null values from MCP Inspector
-  const root = (projectRoot !== null ? projectRoot : undefined) || envProjectRoot || '';
+  // Handle null values from MCP Inspector and remove quotes if present
+  let providedRoot = projectRoot !== null ? projectRoot : undefined;
+  if (providedRoot) {
+    providedRoot = removeQuotes(providedRoot);
+  }
+
+  const root = providedRoot || envProjectRoot || '';
+
   logger.debug('Using project root:', {
-    providedRoot: projectRoot,
+    providedRoot,
     envRoot: envProjectRoot,
     finalRoot: root,
   });

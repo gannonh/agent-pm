@@ -63,8 +63,7 @@ Add the following to your project's `.cursor/mcp.json` file (or install globally
           "env": {
             "PROJECT_ROOT": "/path/to/project/root/",
             "ANTHROPIC_API_KEY": "sk-your-anthropic-api-key",
-            "PERPLEXITY_API_KEY": "pplx-your-perplexity-api-key",
-            "DEBUG_LOGS": "true"
+            "PERPLEXITY_API_KEY": "pplx-your-perplexity-api-key"
           }
         }
     }
@@ -89,9 +88,7 @@ Add the following to your VS-Code Augment User Settings file (CMD+SHIFT+P > Augm
           "env": {
             "PROJECT_ROOT": "/path/to/project/root/",
             "ANTHROPIC_API_KEY": "sk-your-anthropic-api-key",
-            "PERPLEXITY_API_KEY": "pplx-your-perplexity-api-key",
-            "DEBUG_LOGS": "true"
-          }
+            "PERPLEXITY_API_KEY": "pplx-your-perplexity-api-key"
     },
   ]
 }

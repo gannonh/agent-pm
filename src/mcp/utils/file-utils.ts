@@ -199,8 +199,31 @@ export async function generateTaskFiles(
       return false;
     }
 
+    // Delete all existing task files first
+    try {
+      const files = await fs.readdir(artifactsDir);
+      const taskFiles = files.filter((file) => file.startsWith('task_') && file.endsWith('.md'));
+      logger.debug(`Found ${taskFiles.length} existing task files to delete`);
+
+      // Delete all task files
+      for (const file of taskFiles) {
+        try {
+          const filePath = path.join(artifactsDir, file);
+          await fs.unlink(filePath);
+          logger.debug(`Deleted task file: ${filePath}`);
+        } catch (error) {
+          logger.error(`Error deleting task file ${file}:`, error);
+          // Continue with other files even if one deletion fails
+        }
+      }
+    } catch (error) {
+      logger.error(`Error reading artifacts directory ${artifactsDir}:`, error);
+      // Continue with generation even if we can't read existing files
+    }
+
     // Generate a file for each task
     const tasks = tasksData?.tasks || [];
+
     for (const task of tasks) {
       const taskId = task.id;
       const taskFilePath = Config.getArtifactFilePath(taskId, projectRoot);

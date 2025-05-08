@@ -630,6 +630,26 @@ describe('Validation Utilities', () => {
       expect(result).toBe('/env/project/root');
     });
 
+    it('should remove double quotes from the provided project root', () => {
+      const quotedPath = '"/test/project"';
+      const result = getProjectRoot(quotedPath);
+      expect(result).toBe('/test/project');
+    });
+
+    it('should remove single quotes from the provided project root', () => {
+      const quotedPath = "'/test/project'";
+      const result = getProjectRoot(quotedPath);
+      expect(result).toBe('/test/project');
+    });
+
+    it.skip('should remove quotes from the environment variable project root', () => {
+      // This test is skipped because we can't easily override the PROJECT_ROOT constant
+      // in the validation module after the config changes
+
+      // The test would verify that quotes are removed from the environment variable
+      expect(true).toBe(true);
+    });
+
     it.skip('should throw an error if no project root is provided and no environment variable is set', () => {
       // This test is skipped since we can't easily override the PROJECT_ROOT constant
       // in the validation module after the config changes

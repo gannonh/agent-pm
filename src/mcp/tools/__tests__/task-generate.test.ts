@@ -1,5 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+// Mock logger
+vi.mock('../../utils/logger.js', () => ({
+  logger: {
+    debug: vi.fn(),
+    info: vi.fn(),
+    error: vi.fn(),
+    warn: vi.fn(),
+  },
+}));
+
 // Mock dependencies
 vi.mock('../../utils/file-utils.js', () => ({
   readTasksFile: vi.fn(),
@@ -47,9 +57,14 @@ vi.mock('../../../config.js', () => ({
   default: {
     getArtifactsDir: vi.fn((projectRoot) => `${projectRoot}/apm-artifacts`),
     getArtifactsFile: vi.fn((projectRoot) => `${projectRoot}/apm-artifacts/artifacts.json`),
+    getArtifactFilePath: vi.fn(
+      (id, projectRoot) => `${projectRoot}/apm-artifacts/task_${String(id).padStart(3, '0')}.md`
+    ),
   },
   ARTIFACTS_DIR: 'apm-artifacts',
   ARTIFACTS_FILE: 'artifacts.json',
+  DEBUG_LOGS: false,
+  PROJECT_ROOT: '/test/project',
 }));
 
 describe('Task Generate Tool', () => {

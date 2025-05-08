@@ -1,6 +1,6 @@
 {
   "name": "@gannonh/agent-pm",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Planning and orchestration for AI-driven software development",
   "author": "Gannon Hall",
   "main": "dist/index.js",
