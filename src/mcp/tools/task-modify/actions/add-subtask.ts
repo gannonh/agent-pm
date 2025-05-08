@@ -12,7 +12,6 @@ import { findDependentTasks } from '../utils/task-utils.js';
 import { generateMarkdown } from '../../../../core/services/project-brief-markdown.js';
 import { logger } from '../../../utils/logger.js';
 import fs from 'fs/promises';
-import path from 'path';
 
 /**
  * Interface for subtask properties
