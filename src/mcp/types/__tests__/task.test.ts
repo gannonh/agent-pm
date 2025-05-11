@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { Task, Subtask, TaskStatus, TaskPriority, TasksData } from '../../../types/task.js';
 import {
-  TaskSchema,
-  SubtaskSchema,
-  TasksDataSchema,
-  TaskStatusSchema,
-  TaskPrioritySchema,
+  taskSchema as TaskSchema,
+  subtaskSchema as SubtaskSchema,
+  tasksDataSchema as TasksDataSchema,
+  taskStatusSchema as TaskStatusSchema,
+  taskPrioritySchema as TaskPrioritySchema,
 } from '../../../types/validation.js';
 
 describe('Task Types', () => {

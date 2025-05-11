@@ -6,14 +6,14 @@
 import { z } from 'zod';
 import fs from 'fs/promises';
 import path from 'path';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { readTasksFile, writeTasksFile } from '../../utils/file-utils.js';
 import { schemas, validateParams, getProjectRoot } from '../../validation/index.js';
-import { handleError, MCPErrorResponse } from '../../errors/handler.js';
+import { handleError, type MCPErrorResponse } from '../../errors/handler.js';
 import { create_success_payload } from '../../utils/response.js';
 import { MCPNotFoundError } from '../../errors/index.js';
-import { Task } from '../../types/index.js';
-import { ComplexityReport, TaskComplexityAnalysis } from '../../../types/task.d.js';
+import type { Task } from '../../types/index.js';
+import type { ComplexityReport, TaskComplexityAnalysis } from '../../../types/task.d.js';
 import Config, { ARTIFACTS_DIR } from '../../../config.js';
 import { createAnthropicClient } from '../../../core/anthropic-client.js';
 import { createPerplexityClient } from '../../../core/perplexity-client.js';

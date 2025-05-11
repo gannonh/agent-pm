@@ -75,7 +75,7 @@ export class AppError extends Error {
     this.details = details;
   }
 
-  toJSON() {
+  toJSON(): Record<string, unknown> {
     return {
       name: this.name,
       message: this.message,

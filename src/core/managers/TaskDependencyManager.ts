@@ -1,6 +1,6 @@
 import type { Task } from '../../types/task.d.ts';
-import { ITaskDependencyManager } from '../interfaces/ITaskDependencyManager.js';
-import { ITaskRepository } from '../interfaces/ITaskRepository.js';
+import type { ITaskDependencyManager } from '../interfaces/ITaskDependencyManager.js';
+import type { ITaskRepository } from '../interfaces/ITaskRepository.js';
 import { FileSystemError, ErrorCode } from '../../types/errors.js';
 
 /**

@@ -6,12 +6,11 @@
  *
  * @module core/utils/lock
  */
-import fs, { FileHandle } from 'fs/promises';
+import fs, { type FileHandle } from 'fs/promises';
 import path from 'path';
 import { fileExists } from './fs.js';
 import { ensureDirectoryExists } from './path.js';
-import { FileSystemError } from '../../types/errors.js';
-import { ErrorCode } from '../../types/errors.js';
+import { FileSystemError, ErrorCode } from '../../types/errors.js';
 import { logger } from '../../mcp/utils/logger.js';
 
 /**
@@ -86,7 +85,7 @@ export async function acquireLock(
         heldLocks.set(lockFilePath, { fd: fileHandle, path: lockFilePath });
 
         return;
-      } catch (_error) {
+      } catch {
         // We don't need the error details here, just handle the failure case
         // Check if we've timed out
         if (Date.now() - startTime > timeout) {
@@ -110,11 +109,11 @@ export async function acquireLock(
 
               // Process exists, wait and retry
               await new Promise((resolve) => setTimeout(resolve, retryInterval));
-            } catch (_processError) {
+            } catch {
               // Process doesn't exist, remove the stale lock
               await fs.unlink(lockFilePath);
             }
-          } catch (_readError) {
+          } catch {
             // Error reading the lock file, wait and retry
             await new Promise((resolve) => setTimeout(resolve, retryInterval));
           }
@@ -271,11 +270,10 @@ process.on('exit', () => {
         try {
           // Use a safer approach with type assertions
           // We need to disable multiple ESLint rules for this low-level Node.js API access
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const processObj = globalThis.process as any;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
           if (processObj && typeof processObj.binding === 'function') {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             const fsBinding = processObj.binding('fs') as FSBinding;
             if (fsBinding && typeof fsBinding.unlink === 'function') {
               fsBinding.unlink(lock.path);

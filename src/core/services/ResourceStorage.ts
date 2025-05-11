@@ -14,8 +14,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { acquireLock, releaseLock } from '../utils/lock.js';
-import { ensureDirectoryExists } from '../utils/path.js';
-import { findProjectRoot } from '../utils/path.js';
+import { ensureDirectoryExists, findProjectRoot } from '../utils/path.js';
 import { logger } from '../../mcp/utils/logger.js';
 import { PROJECT_ROOT, ARTIFACTS_DIR } from '../../config.js';
 
@@ -203,7 +202,7 @@ export class ResourceStorage {
     try {
       await fs.access(resourcePath);
       return true;
-    } catch (_error) {
+    } catch {
       return false;
     }
   }

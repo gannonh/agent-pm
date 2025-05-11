@@ -2,7 +2,7 @@
  * @fileoverview Utility functions for the dependencies tool
  */
 
-import { Task } from '../../types/index.js';
+import type { Task } from '../../types/index.js';
 
 /**
  * Find a task by ID in the tasks array

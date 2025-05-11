@@ -1,30 +1,25 @@
 import type { TasksData } from '../../types/task.d.ts';
-import { ITaskFileManager } from '../interfaces/ITaskFileManager.js';
-import { AppConfig } from '../../types/config.js';
+import type { ITaskFileManager } from '../interfaces/ITaskFileManager.js';
+import type { AppConfig } from '../../types/config.js';
 import * as fs from '../utils/fs.js';
 import * as path from '../utils/path.js';
 import * as lock from '../utils/lock.js';
 import * as backup from '../utils/backup.js';
 import * as serialization from '../utils/serialization.js';
-import type {
-  FileSystemError as _FileSystemError,
-  ErrorCode as _ErrorCode,
-} from '../../types/errors.js';
+import type {} from '../../types/errors.js';
 
 /**
  * Implementation of the task file manager
  */
 export class TaskFileManager implements ITaskFileManager {
-  private config?: Partial<AppConfig>;
   private projectRoot?: string;
 
   /**
    * Create a new TaskFileManager
-   * @param config Application configuration
+   * @param config Application configuration (unused but kept for interface compatibility)
    * @param projectRoot Project root directory
    */
-  constructor(config?: Partial<AppConfig>, projectRoot?: string) {
-    this.config = config;
+  constructor(_config?: Partial<AppConfig>, projectRoot?: string) {
     this.projectRoot = projectRoot;
   }
 

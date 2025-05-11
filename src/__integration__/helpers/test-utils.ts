@@ -147,7 +147,7 @@ export async function createSampleTasks(projectRoot: string, count = 3): Promise
  * Sets up test environment hooks for integration tests
  * @returns Object with test directory and cleanup function
  */
-export function setupIntegrationTest() {
+export function setupIntegrationTest(): { getTestDir: () => string } {
   let testDir: string;
 
   beforeEach(async () => {

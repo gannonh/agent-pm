@@ -1,6 +1,6 @@
 import type { Task, TaskStatus } from '../../types/task.d.ts';
-import { TaskSchema } from '../../types/validation.js';
-import { ITaskValidator } from '../interfaces/ITaskValidator.js';
+import { taskSchema } from '../../types/validation.js';
+import type { ITaskValidator } from '../interfaces/ITaskValidator.js';
 import { FileSystemError, ErrorCode } from '../../types/errors.js';
 
 /**
@@ -38,7 +38,7 @@ export class TaskValidator implements ITaskValidator {
    */
   validateTask(task: Task): Task {
     try {
-      return TaskSchema.parse(task);
+      return taskSchema.parse(task);
     } catch (error) {
       throw new FileSystemError(
         `Invalid task data: ${error instanceof Error ? error.message : String(error)}`,

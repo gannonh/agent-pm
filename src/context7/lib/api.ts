@@ -1,4 +1,4 @@
-import { SearchResponse } from './types.js';
+import type { SearchResponse } from './types.js';
 import { logger } from '../../mcp/utils/logger.js';
 
 const CONTEXT7_API_BASE_URL = 'https://context7.com/api';

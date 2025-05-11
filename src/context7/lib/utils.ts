@@ -1,4 +1,4 @@
-import { SearchResponse, SearchResult } from './types.js';
+import type { SearchResponse, SearchResult } from './types.js';
 
 /**
  * Format a search result into a string representation

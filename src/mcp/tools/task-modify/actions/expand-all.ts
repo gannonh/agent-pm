@@ -6,7 +6,7 @@ import { generateTaskFiles, readTasksFile, writeTasksFile } from '../../../utils
 import { schemas, validateParams } from '../../../validation/index.js';
 import { MCPNotFoundError } from '../../../errors/index.js';
 import { create_success_payload } from '../../../utils/response.js';
-import Config, { PRODUCT_BRIEF_FILE } from '../../../../config.js';
+import config, { PRODUCT_BRIEF_FILE } from '../../../../config.js';
 import { generateMarkdown } from '../../../../core/services/project-brief-markdown.js';
 import { logger } from '../../../utils/logger.js';
 import { handleExpand } from './expand.js';
@@ -99,7 +99,7 @@ export async function handleExpandAll(
     return create_success_payload(
       {
         message: 'No pending tasks found to expand',
-        tasksPath: file || Config.getArtifactsFile(projectRoot),
+        tasksPath: file || config.getArtifactsFile(projectRoot),
       },
       'No pending tasks found to expand',
       {
@@ -190,9 +190,9 @@ export async function handleExpandAll(
         // If no URI, try to find a project brief file in the resources directory
         const fs = await import('fs/promises');
         const path = await import('path');
-        const Config = (await import('../../../../config.js')).default;
+        const config = (await import('../../../../config.js')).default;
 
-        const artifactsDir = Config.getArtifactsDir(projectRoot);
+        const artifactsDir = config.getArtifactsDir(projectRoot);
         const resourcesDir = path.join(artifactsDir, 'resources', 'project-brief');
         const markdownPath = path.join(artifactsDir, PRODUCT_BRIEF_FILE);
 
@@ -234,7 +234,7 @@ export async function handleExpandAll(
         }
 
         // Helper function to update the markdown file directly
-        async function updateMarkdownDirectly() {
+        async function updateMarkdownDirectly(): Promise<void> {
           try {
             // Check if the markdown file exists
             await fs.access(markdownPath);
@@ -317,7 +317,7 @@ export async function handleExpandAll(
         {
           ...mockResponse,
           errors: errors.length > 0 ? errors : undefined,
-          tasksPath: file || Config.getArtifactsFile(projectRoot),
+          tasksPath: file || config.getArtifactsFile(projectRoot),
         },
         `Expanded ${mockResponse.expandedTasks.length} pending task(s) with complexity >= ${threshold || 5}${
           errors.length > 0 ? ` with ${errors.length} error(s)` : ''
@@ -339,7 +339,7 @@ export async function handleExpandAll(
     {
       expandedTasks,
       errors: errors.length > 0 ? errors : undefined,
-      tasksPath: file || Config.getArtifactsFile(projectRoot),
+      tasksPath: file || config.getArtifactsFile(projectRoot),
     },
     `Expanded ${expandedTasks.length} pending task(s) with complexity >= ${threshold || 5}${
       errors.length > 0 ? ` with ${errors.length} error(s)` : ''

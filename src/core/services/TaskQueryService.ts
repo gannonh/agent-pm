@@ -1,12 +1,12 @@
 import type { Task, TaskStatus } from '../../types/task.d.ts';
-import {
+import type {
   TaskFilterOptions,
   TaskQueryOptions,
   TaskQueryResult,
   TaskSortOptions,
 } from '../../types/utils.js';
-import { ITaskQueryService } from '../interfaces/ITaskQueryService.js';
-import { ITaskRepository } from '../interfaces/ITaskRepository.js';
+import type { ITaskQueryService } from '../interfaces/ITaskQueryService.js';
+import type { ITaskRepository } from '../interfaces/ITaskRepository.js';
 
 /**
  * Implementation of the task query service
@@ -346,10 +346,7 @@ export class TaskQueryService implements ITaskQueryService {
 
     // Handle subtasks if needed
     if (options?.withSubtasks === false) {
-      filteredTasks = filteredTasks.map((task) => {
-        const { subtasks: _subtasks, ...rest } = task;
-        return rest;
-      }) as Task[];
+      filteredTasks = filteredTasks.map(({ subtasks: _, ...rest }) => rest) as Task[];
     }
 
     return filteredTasks;

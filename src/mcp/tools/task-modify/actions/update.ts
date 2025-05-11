@@ -7,12 +7,12 @@ import { schemas, validateParams } from '../../../validation/index.js';
 import { MCPError, MCPNotFoundError } from '../../../errors/index.js';
 import { create_success_payload } from '../../../utils/response.js';
 import { ErrorCode } from '../../../../types/errors.js';
-import Config, { PRODUCT_BRIEF_FILE } from '../../../../config.js';
+import config, { PRODUCT_BRIEF_FILE } from '../../../../config.js';
 import { createPerplexityClient } from '../../../../core/perplexity-client.js';
 import { createAnthropicClient } from '../../../../core/anthropic-client.js';
 import { generateMarkdown } from '../../../../core/services/project-brief-markdown.js';
 import { logger } from '../../../utils/logger.js';
-import { Task } from '../../../types/index.js';
+import type { Task } from '../../../types/index.js';
 
 /**
  * Handles the update action (from apm_update_task)
@@ -107,7 +107,7 @@ export async function handleUpdate(
       {
         task,
         researchResults,
-        tasksPath: file || Config.getArtifactsFile(projectRoot),
+        tasksPath: file || config.getArtifactsFile(projectRoot),
       },
       `Research completed for task ${id}`,
       {
@@ -235,7 +235,7 @@ export async function handleUpdate(
       const fs = await import('fs/promises');
       const path = await import('path');
 
-      const artifactsDir = Config.getArtifactsDir(projectRoot);
+      const artifactsDir = config.getArtifactsDir(projectRoot);
       const resourcesDir = path.join(artifactsDir, 'resources', 'project-brief');
       const markdownPath = path.join(artifactsDir, PRODUCT_BRIEF_FILE);
 
@@ -277,7 +277,7 @@ export async function handleUpdate(
       }
 
       // Helper function to update the markdown file directly
-      async function updateMarkdownDirectly() {
+      async function updateMarkdownDirectly(): Promise<void> {
         try {
           // Check if the markdown file exists
           await fs.access(markdownPath);
@@ -342,7 +342,7 @@ export async function handleUpdate(
   return create_success_payload(
     {
       task,
-      tasksPath: file || Config.getArtifactsFile(projectRoot),
+      tasksPath: file || config.getArtifactsFile(projectRoot),
       ...(research ? { researchResults } : {}),
     },
     `Task ${id} updated successfully`,

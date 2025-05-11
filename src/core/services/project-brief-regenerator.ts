@@ -20,7 +20,7 @@ export async function updateProjectBriefAfterTaskModification(
     // Import necessary utilities
     const fs = await import('fs/promises');
     const path = await import('path');
-    const Config = (await import('../../config.js')).default;
+    const config = (await import('../../config.js')).default;
 
     // Read the tasks data
     const tasksData = await readTasksFile(projectRoot);
@@ -61,7 +61,7 @@ export async function updateProjectBriefAfterTaskModification(
       return markdownPath;
     } else {
       // If no URI, try to find a project brief file in the resources directory
-      const artifactsDir = Config.getArtifactsDir(projectRoot);
+      const artifactsDir = config.getArtifactsDir(projectRoot);
       const resourcesDir = path.join(artifactsDir, 'resources', 'project-brief');
 
       try {

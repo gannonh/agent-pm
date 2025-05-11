@@ -3,16 +3,16 @@
  * This tool combines the functionality of apm_get_tasks, apm_get_task, and apm_next_task
  * into a single tool with different actions.
  */
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { readTasksFile } from '../utils/file-utils.js';
 import { calculateTaskSummary } from '../utils/tool-utils.js';
 import { getProjectRoot, schemas, validateParams } from '../validation/index.js';
-import { handleError, MCPErrorResponse } from '../errors/handler.js';
-import { create_success_payload } from '../utils/response.js';
-import { Task } from '../types/index.js';
-import { logger } from '../utils/logger.js';
+import { handleError, type MCPErrorResponse } from '../errors/handler.js';
 import { MCPNotFoundError, MCPValidationError } from '../errors/index.js';
+import type { Task } from '../types/index.js';
+import { logger } from '../utils/logger.js';
+import { create_success_payload } from '../utils/response.js';
 
 // No unused interfaces needed
 
@@ -150,7 +150,8 @@ async function handleGetAll(
   if (!withSubtasks) {
     // If withSubtasks is false, remove subtasks from the response
     filteredTasks = filteredTasks.map((task) => {
-      const { subtasks: _subtasks, ...taskWithoutSubtasks } = task;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { subtasks, ...taskWithoutSubtasks } = task;
       return taskWithoutSubtasks as Task;
     });
   }
@@ -411,7 +412,8 @@ async function handleFilterByStatus(
   if (!withSubtasks) {
     // If withSubtasks is false, remove subtasks from the response
     filteredTasks = filteredTasks.map((task) => {
-      const { subtasks: _subtasks, ...taskWithoutSubtasks } = task;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { subtasks, ...taskWithoutSubtasks } = task;
       return taskWithoutSubtasks as Task;
     });
   }
@@ -475,7 +477,8 @@ async function handleFilterByPriority(
   if (!withSubtasks) {
     // If withSubtasks is false, remove subtasks from the response
     filteredTasks = filteredTasks.map((task) => {
-      const { subtasks: _subtasks, ...taskWithoutSubtasks } = task;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { subtasks, ...taskWithoutSubtasks } = task;
       return taskWithoutSubtasks as Task;
     });
   }

@@ -1,4 +1,4 @@
-import { Task, Subtask, TaskStatus } from './task.js';
+import type { Task, Subtask, TaskStatus } from './task.js';
 
 /**
  * Type guard to check if a task has subtasks

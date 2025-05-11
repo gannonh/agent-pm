@@ -1,4 +1,4 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerTaskTool } from './task.js';
 import { registerTaskModifyTool } from './task-modify/index.js';
 import { registerCreateProjectBriefTool } from './project/index.js';

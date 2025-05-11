@@ -127,7 +127,7 @@ server.tool(
   }
 );
 
-async function main() {
+async function main(): Promise<void> {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   logger.info('Context7 Documentation MCP Server running on stdio');

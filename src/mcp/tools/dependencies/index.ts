@@ -3,14 +3,15 @@
  */
 
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { readTasksFile, writeTasksFile, generateTaskFiles } from '../../utils/file-utils.js';
 import { logger } from '../../utils/logger.js';
 import { schemas } from '../../utils/schemas.js';
 import { createMcpResponse } from '../../utils/response.js';
+import type { MCPErrorResponse } from '../../errors/handler.js';
 import { findTaskById, validateDependencies } from './utils.js';
 import { updateProjectBriefAfterTaskModification } from '../../../core/services/project-brief-regenerator.js';
-import { TasksData } from '../../types/index.js';
+import type { TasksData } from '../../types/index.js';
 import { ARTIFACTS_DIR, ARTIFACTS_FILE } from '../../../config.js';
 
 /**
@@ -101,7 +102,7 @@ async function handleAddDependency(
   id?: string,
   dependsOn?: string,
   file?: string
-) {
+): Promise<MCPErrorResponse> {
   // Validate required parameters
   if (!id) {
     throw new Error('Missing required parameter: id');
@@ -205,7 +206,7 @@ async function handleRemoveDependency(
   id?: string,
   dependsOn?: string,
   file?: string
-) {
+): Promise<MCPErrorResponse> {
   // Validate required parameters
   if (!id) {
     throw new Error('Missing required parameter: id');
@@ -285,7 +286,7 @@ async function handleValidateDependencies(
   projectRoot: string,
   tasksData: TasksData,
   _file?: string
-) {
+): Promise<MCPErrorResponse> {
   // Initialize validation results
   const validationResults = {
     circularDependencies: [] as { taskId: string; path: string[] }[],
@@ -349,7 +350,11 @@ async function handleValidateDependencies(
  * @param file The tasks file path
  * @returns The MCP response
  */
-async function handleFixDependencies(projectRoot: string, tasksData: TasksData, file?: string) {
+async function handleFixDependencies(
+  projectRoot: string,
+  tasksData: TasksData,
+  file?: string
+): Promise<MCPErrorResponse> {
   // Initialize fix results
   const fixResults = {
     circularDependenciesFixed: [] as { taskId: string; removedDependencies: string[] }[],

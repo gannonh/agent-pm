@@ -1,16 +1,16 @@
 import { EventEmitter } from 'events';
 import type { Task, TasksData, TaskStatus } from '../types/task.d.ts';
-import { TaskFilterOptions, TaskQueryOptions, TaskQueryResult } from '../types/utils.js';
-import { AppConfig } from '../types/config.js';
+import type { TaskFilterOptions, TaskQueryOptions, TaskQueryResult } from '../types/utils.js';
+import type { AppConfig } from '../types/config.js';
 import { FileSystemError, ErrorCode } from '../types/errors.js';
 
-import { ITaskRepository } from './interfaces/ITaskRepository.js';
-import { ITaskValidator } from './interfaces/ITaskValidator.js';
-import { ITaskDependencyManager } from './interfaces/ITaskDependencyManager.js';
-import { ITaskFileManager } from './interfaces/ITaskFileManager.js';
-import { ITaskQueryService } from './interfaces/ITaskQueryService.js';
-import { ITaskMigrationService } from './interfaces/ITaskMigrationService.js';
-import { ITransactionManager } from './interfaces/ITransactionManager.js';
+import type { ITaskRepository } from './interfaces/ITaskRepository.js';
+import type { ITaskValidator } from './interfaces/ITaskValidator.js';
+import type { ITaskDependencyManager } from './interfaces/ITaskDependencyManager.js';
+import type { ITaskFileManager } from './interfaces/ITaskFileManager.js';
+import type { ITaskQueryService } from './interfaces/ITaskQueryService.js';
+import type { ITaskMigrationService } from './interfaces/ITaskMigrationService.js';
+import type { ITransactionManager } from './interfaces/ITransactionManager.js';
 
 import { TaskRepository } from './repositories/TaskRepository.js';
 import { TaskValidator } from './validators/TaskValidator.js';

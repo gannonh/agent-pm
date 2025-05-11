@@ -2,7 +2,7 @@
  * @fileoverview Utility functions for MCP tools.
  * @deprecated Use src/mcp/errors/handler.ts for error handling.
  */
-import { ToolResponse, Task, TaskSummary } from '../types/index.js';
+import type { ToolResponse, Task, TaskSummary } from '../types/index.js';
 import { ErrorCode } from '../../types/errors.js';
 import { createErrorResponse as createMcpErrorResponseFromHandler } from '../errors/handler.js';
 

@@ -4,10 +4,10 @@
  */
 
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { sessionManager } from '../session/manager.js';
 import { validateParams } from '../validation/index.js';
-import { handleError, MCPErrorResponse } from '../errors/handler.js';
+import { handleError, type MCPErrorResponse } from '../errors/handler.js';
 
 /**
  * Registers session management tools with the MCP server.
