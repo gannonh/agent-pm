@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import {
-  AppConfigSchema,
-  AIModelConfigSchema,
-  FileSystemConfigSchema,
-  MCPServerConfigSchema,
+  appConfigSchema as AppConfigSchema,
+  aiModelConfigSchema as AIModelConfigSchema,
+  fileSystemConfigSchema as FileSystemConfigSchema,
+  mcpServerConfigSchema as MCPServerConfigSchema,
   AppConfig,
 } from '../../../types/config.js';
 import {

@@ -299,7 +299,47 @@ export class AnthropicClient {
     this.requestCount++;
   }
 
-  // Method removed as it was unused
+  /**
+   * Handle API errors and convert them to appropriate error types
+   * @param error - The error to handle
+   * @returns A typed error
+   */
+  private handleError(error: unknown): Error {
+    if (
+      error instanceof AnthropicAuthError ||
+      error instanceof AnthropicRateLimitError ||
+      error instanceof AnthropicAPIError
+    ) {
+      return error;
+    }
+
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorString = JSON.stringify(error);
+
+    // Check for authentication errors
+    if (
+      errorMessage.includes('auth') ||
+      errorMessage.includes('authentication') ||
+      errorMessage.includes('apiKey') ||
+      errorMessage.includes('api key') ||
+      errorString.includes('auth')
+    ) {
+      return new AnthropicAuthError(`Authentication error with Anthropic API: ${errorMessage}`);
+    }
+
+    // Check for rate limit errors
+    if (
+      errorMessage.includes('rate') ||
+      errorMessage.includes('limit') ||
+      errorMessage.includes('too many') ||
+      errorString.includes('rate_limit')
+    ) {
+      return new AnthropicRateLimitError(`Rate limit exceeded with Anthropic API: ${errorMessage}`);
+    }
+
+    // Default to general API error
+    return new AnthropicAPIError(`Failed to query Anthropic API: ${errorMessage}`);
+  }
 
   /**
    * Make a request to the Anthropic API with retries
