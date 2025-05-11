@@ -1,6 +1,6 @@
 {
   "name": "@gannonh/agent-pm",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Planning and orchestration for AI-driven software development",
   "author": "Gannon Hall",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias && chmod +x dist/*.js",
     "watch": "tsc --watch",
     "test": "vitest run --config vitest.config.ts",
     "test:coverage": "vitest run --coverage --config vitest.config.ts",
@@ -29,13 +29,14 @@
     "lint": "eslint src --ext ts,tsx && tsc --noEmit",
     "lint:fix": "eslint src --ext ts,tsx --fix && prettier --write \"src/**/*.{ts,tsx}\"",
     "lint:strict": "eslint src --ext ts,tsx --max-warnings 0",
+    "fix": "npm run lint:fix && npm run format",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
-    "preflight": "npm run lint:fix && npm run test:integration && npm run test:coverage && npm run build",
+    "preflight": "npm run clean && npm run lint:fix && npm run test:integration && npm run test:coverage && npm run build",
     "sync-coverage": "node scripts/sync-coverage-thresholds.js",
     "fix-imports": "node scripts/fix-imports.js",
-    "build:dev": "npm run build && chmod +x dist/*.js",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist node_modules && npm install && npm run build"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.1",

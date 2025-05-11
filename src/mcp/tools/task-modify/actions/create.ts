@@ -11,7 +11,7 @@ import Config, { PRODUCT_BRIEF_FILE } from '../../../../config.js';
 import { createNewTask, getNextTaskId, validateDependencies } from '../utils/task-utils.js';
 import { generateMarkdown } from '../../../../core/services/project-brief-markdown.js';
 import { logger } from '../../../utils/logger.js';
-import { Task, TasksData } from '../../../types/index.js';
+import type { Task, TasksData } from '../../../types/index.js';
 
 /**
  * Handles the create action (from apm_add_task)
@@ -151,7 +151,7 @@ export async function handleCreate(
       }
 
       // Helper function to update the markdown file directly
-      async function updateMarkdownDirectly() {
+      async function updateMarkdownDirectly(): Promise<void> {
         try {
           // Check if the markdown file exists
           await fs.access(markdownPath);
@@ -348,7 +348,7 @@ export async function handleCreate(
       }
 
       // Helper function to update the markdown file directly
-      async function updateMarkdownDirectly() {
+      async function updateMarkdownDirectly(): Promise<void> {
         try {
           // Check if the markdown file exists
           await fs.access(markdownPath);

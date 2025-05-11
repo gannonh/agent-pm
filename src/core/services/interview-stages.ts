@@ -2,7 +2,7 @@
  * @fileoverview Interview stage definitions
  */
 
-import { InterviewStageType, StageDefinitions } from '../types/interview-types.js';
+import { InterviewStageType, type StageDefinitions } from '../types/interview-types.js';
 
 /**
  * Stage definitions with prompts and processing logic

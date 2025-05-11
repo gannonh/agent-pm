@@ -4,10 +4,10 @@
  * artifacts.json file.
  */
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { readTasksFile, generateTaskFiles } from '../utils/file-utils.js';
 import { schemas, validateParams, getProjectRoot } from '../validation/index.js';
-import { handleError, MCPErrorResponse } from '../errors/handler.js';
+import { handleError, type MCPErrorResponse } from '../errors/handler.js';
 import { create_success_payload } from '../utils/response.js';
 import { MCPError } from '../errors/index.js';
 import { ErrorCode } from '../../types/errors.js';
@@ -56,7 +56,7 @@ export function registerGenerateTool(server: McpServer): void {
       try {
         // Validate parameters using our validation utilities
         const validatedParams = validateParams(params, generateSchema);
-        const { projectRoot: rawProjectRoot, file, output: _output } = validatedParams;
+        const { projectRoot: rawProjectRoot, file } = validatedParams;
 
         // Get the project root (from params or environment variable)
         const projectRoot = getProjectRoot(rawProjectRoot);

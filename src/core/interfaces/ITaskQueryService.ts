@@ -1,5 +1,5 @@
 import type { Task, TaskStatus } from '../../types/task.d.ts';
-import { TaskFilterOptions, TaskQueryOptions, TaskQueryResult } from '../../types/utils.js';
+import type { TaskFilterOptions, TaskQueryOptions, TaskQueryResult } from '../../types/utils.js';
 
 /**
  * Interface for task query operations

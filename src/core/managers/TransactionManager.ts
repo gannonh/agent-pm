@@ -1,5 +1,5 @@
 import type { Task } from '../../types/task.d.ts';
-import { ITransactionManager, TransactionChange } from '../interfaces/ITransactionManager.js';
+import type { ITransactionManager, TransactionChange } from '../interfaces/ITransactionManager.js';
 import { FileSystemError, ErrorCode } from '../../types/errors.js';
 
 /**

@@ -6,8 +6,18 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { LRUCache } from 'lru-cache';
 import { logger } from '../mcp/utils/logger.js';
-import { AIError } from '../types/errors.js';
-import { ErrorCode } from '../types/errors.js';
+import { AIError, ErrorCode } from '../types/errors.js';
+import {
+  ANTHROPIC_API_KEY,
+  ANTHROPIC_TEMPERATURE,
+  ANTHROPIC_MAX_TOKENS,
+  ANTHROPIC_MODEL,
+  ANTHROPIC_MAX_CACHE_SIZE,
+  ANTHROPIC_CACHE_TTL,
+  ANTHROPIC_MAX_RETRIES,
+  ANTHROPIC_BASE_URL,
+  ANTHROPIC_SYSTEM_PROMPT,
+} from '../config.js';
 
 /**
  * Message from Anthropic API
@@ -289,52 +299,7 @@ export class AnthropicClient {
     this.requestCount++;
   }
 
-  /**
-   * Handle errors from the Anthropic API
-   * @param error - The error to handle
-   * @returns The appropriate error type
-   */
-  private handleError(error: unknown): Error {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    const errorString = JSON.stringify(error);
-
-    const errorDetails = {
-      error,
-      errorMessage,
-      errorStack: error instanceof Error ? error.stack : undefined,
-      errorName: error instanceof Error ? error.name : undefined,
-      errorCode:
-        error instanceof Error && 'code' in error
-          ? (error as Error & { code: string }).code
-          : undefined,
-      model: this.model,
-      temperature: this.temperature,
-      maxTokens: this.maxTokens,
-    };
-    logger.error(`Error in Anthropic API: ${errorMessage}`, errorDetails);
-
-    // Throw appropriate error based on the error message and error object
-    if (errorMessage.includes('authentication') || errorMessage.includes('API key')) {
-      return new AnthropicAuthError(`Authentication error: ${errorMessage}`);
-    } else if (errorMessage.includes('rate limit')) {
-      return new AnthropicRateLimitError(`Rate limit exceeded: ${errorMessage}`);
-    } else if (
-      errorMessage.includes('overloaded') ||
-      errorString.includes('overloaded_error') ||
-      errorString.includes('Overloaded')
-    ) {
-      // Special case for overloaded servers
-      return new AnthropicAPIError(`Anthropic API overloaded: ${errorMessage}`);
-    } else if (errorMessage.includes('model')) {
-      return new AnthropicAPIError(`Invalid model: ${errorMessage}`);
-    } else if (errorMessage.includes('parameter')) {
-      return new AnthropicAPIError(`Invalid parameter: ${errorMessage}`);
-    } else if (errorMessage.includes('server')) {
-      return new AnthropicAPIError(`Server error: ${errorMessage}`);
-    } else {
-      return new AnthropicAPIError(`Failed to query Anthropic API: ${errorMessage}`);
-    }
-  }
+  // Method removed as it was unused
 
   /**
    * Make a request to the Anthropic API with retries
@@ -617,17 +582,7 @@ export class AnthropicClient {
  * Create an Anthropic client from environment variables
  * @returns Anthropic client
  */
-import {
-  ANTHROPIC_API_KEY,
-  ANTHROPIC_TEMPERATURE,
-  ANTHROPIC_MAX_TOKENS,
-  ANTHROPIC_MODEL,
-  ANTHROPIC_MAX_CACHE_SIZE,
-  ANTHROPIC_CACHE_TTL,
-  ANTHROPIC_MAX_RETRIES,
-  ANTHROPIC_BASE_URL,
-  ANTHROPIC_SYSTEM_PROMPT,
-} from '../config.js';
+// Import config at the top of the file instead
 
 export function createAnthropicClient(): AnthropicClient {
   const apiKey = ANTHROPIC_API_KEY;

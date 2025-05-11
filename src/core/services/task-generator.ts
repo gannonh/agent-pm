@@ -4,8 +4,8 @@
 
 import { logger } from '../../mcp/utils/logger.js';
 import { resourceStorage } from './ResourceStorage.js';
-import { AnthropicClient } from '../anthropic-client.js';
-import { ProjectBrief, InterviewStageType, InterviewError } from '../types/interview-types.js';
+import type { AnthropicClient } from '../anthropic-client.js';
+import { InterviewStageType, InterviewError, type ProjectBrief } from '../types/interview-types.js';
 import { TaskGenerationStage } from '../types/task-generation.js';
 import {
   analyzeProjectBrief,
@@ -45,7 +45,7 @@ export async function generateTasks(
     const steps = ['Project Analysis', 'Task Structure', 'Task Details', 'File Generation'];
 
     const startTime = Date.now();
-    const getElapsedTime = () => {
+    const getElapsedTime = (): string => {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const minutes = Math.floor(elapsed / 60);
       const seconds = elapsed % 60;

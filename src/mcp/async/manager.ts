@@ -5,17 +5,17 @@
 
 import {
   asyncOperationManager as coreManager,
-  OperationFunction,
-  OperationProgress,
-  Logger,
-  OperationResult,
+  type OperationFunction,
+  type OperationProgress,
+  type Logger,
+  type OperationResult,
 } from '../../core/utils/async-manager.js';
 
 import {
-  AsyncOperation,
-  AsyncOperationResult,
   AsyncOperationStatus,
   mapFromCoreStatus,
+  type AsyncOperation,
+  type AsyncOperationResult,
 } from './types.js';
 
 import { logger } from '../utils/logger.js';
@@ -329,7 +329,7 @@ export class McpAsyncOperationManager {
     const operations: AsyncOperation[] = [];
 
     // Iterate through all operation metadata
-    for (const [operationId, _] of this.operationMetadata) {
+    for (const operationId of this.operationMetadata.keys()) {
       const operation = this.getOperation(operationId);
       if (operation) {
         operations.push(operation);

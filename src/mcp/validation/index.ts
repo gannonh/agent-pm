@@ -224,7 +224,7 @@ export function formatZodError(error: z.ZodError): Record<string, string[]> {
  * @param isRequired Whether the parameter is required
  * @returns Zod schema for task ID(s)
  */
-export function createTaskIdSchema(description: string, isRequired = true) {
+export function createTaskIdSchema(description: string, isRequired = true): z.ZodType {
   const schema = z.string().min(1, 'Task ID is required').describe(description);
 
   // Use nullish() to handle null values from MCP Inspector
@@ -294,7 +294,7 @@ export function parseTaskIds(ids: string): string[] {
  * @param isRequired Whether the parameter is required
  * @returns Zod schema for file path
  */
-export function createFilePathSchema(description: string, isRequired = true) {
+export function createFilePathSchema(description: string, isRequired = true): z.ZodType {
   const schema = z.string().min(1, 'File path is required').describe(description);
 
   // Use nullish() to handle null values from MCP Inspector

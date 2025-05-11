@@ -4,9 +4,9 @@
  * into a single tool with different actions.
  */
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { getProjectRoot, schemas, validateParams } from '../../validation/index.js';
-import { handleError, MCPErrorResponse } from '../../errors/handler.js';
+import { handleError, type MCPErrorResponse } from '../../errors/handler.js';
 import { MCPValidationError } from '../../errors/index.js';
 import { logger } from '../../utils/logger.js';
 
@@ -169,7 +169,7 @@ export function registerTaskModifyTool(server: McpServer): void {
       try {
         // Validate parameters using our validation utilities
         const validatedParams = validateParams(params, taskModifySchema);
-        const { action, projectRoot: rawProjectRoot, file: _file } = validatedParams;
+        const { action, projectRoot: rawProjectRoot } = validatedParams;
 
         // Get the project root (from params or environment variable)
         const projectRoot = getProjectRoot(rawProjectRoot);

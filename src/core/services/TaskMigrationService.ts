@@ -1,5 +1,5 @@
 import type { Task, TasksData, TaskStatus } from '../../types/task.d.ts';
-import {
+import type {
   ITaskMigrationService,
   PartialTasksData,
   PartialTask,

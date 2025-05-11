@@ -7,17 +7,17 @@ import { createAnthropicClient } from '../anthropic-client.js';
 import { resourceStorage } from './ResourceStorage.js';
 import {
   InterviewStageType,
-  ProjectBrief,
-  InterviewState,
-  InterviewResponse,
   InterviewError,
+  type ProjectBrief,
+  type InterviewState,
+  type InterviewResponse,
 } from '../types/interview-types.js';
 import { stageDefinitions } from './interview-stages.js';
 import { processStageResponse } from './interview-response-processor.js';
 import { updateProjectBrief } from './project-brief-updater.js';
 import { generateMarkdown as generateMarkdownFn } from './project-brief-markdown.js';
 import { generateTasks as generateTasksFn } from './task-generator.js';
-import { TaskGenerationStage } from '../types/task-generation.js';
+import type { TaskGenerationStage } from '../types/task-generation.js';
 
 /**
  * Service for managing project brief interviews

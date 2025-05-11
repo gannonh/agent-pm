@@ -139,7 +139,7 @@ export class Config {
 
     try {
       await fs.access(artifactsDir);
-    } catch (_error) {
+    } catch {
       // Directory doesn't exist, create it
       await fs.mkdir(artifactsDir, { recursive: true });
     }

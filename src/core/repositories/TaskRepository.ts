@@ -1,5 +1,5 @@
 import type { Task } from '../../types/task.d.ts';
-import { ITaskRepository } from '../interfaces/ITaskRepository.js';
+import type { ITaskRepository } from '../interfaces/ITaskRepository.js';
 import { FileSystemError, ErrorCode } from '../../types/errors.js';
 
 /**

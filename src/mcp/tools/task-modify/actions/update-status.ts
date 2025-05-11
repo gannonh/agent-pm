@@ -7,7 +7,7 @@ import { schemas, validateParams } from '../../../validation/index.js';
 import { MCPError, MCPNotFoundError } from '../../../errors/index.js';
 import { create_success_payload } from '../../../utils/response.js';
 import { ErrorCode } from '../../../../types/errors.js';
-import Config, { PRODUCT_BRIEF_FILE } from '../../../../config.js';
+import config, { PRODUCT_BRIEF_FILE } from '../../../../config.js';
 import { logger } from '../../../utils/logger.js';
 import { generateMarkdown } from '../../../../core/services/project-brief-markdown.js';
 
@@ -143,7 +143,7 @@ export async function handleUpdateStatus(
         {
           updatedTasks,
           errors: errors.length > 0 ? errors : undefined,
-          tasksPath: file || Config.getArtifactsFile(projectRoot),
+          tasksPath: file || config.getArtifactsFile(projectRoot),
         },
         `Updated status of ${updatedTasks.length} task(s) to '${statusString}'${
           errors.length > 0 ? ` with ${errors.length} error(s)` : ''
@@ -189,7 +189,7 @@ export async function handleUpdateStatus(
       const fs = await import('fs/promises');
       const path = await import('path');
 
-      const artifactsDir = Config.getArtifactsDir(projectRoot);
+      const artifactsDir = config.getArtifactsDir(projectRoot);
       const resourcesDir = path.join(artifactsDir, 'resources', 'project-brief');
       const markdownPath = path.join(artifactsDir, PRODUCT_BRIEF_FILE);
 
@@ -231,7 +231,7 @@ export async function handleUpdateStatus(
       }
 
       // Helper function to update the markdown file directly
-      async function updateMarkdownDirectly() {
+      async function updateMarkdownDirectly(): Promise<void> {
         try {
           // Check if the markdown file exists
           await fs.access(markdownPath);
@@ -298,7 +298,7 @@ export async function handleUpdateStatus(
     {
       updatedTasks,
       errors: errors.length > 0 ? errors : undefined,
-      tasksPath: file || Config.getArtifactsFile(projectRoot),
+      tasksPath: file || config.getArtifactsFile(projectRoot),
     },
     `Updated status of ${updatedTasks.length} task(s) to '${statusString}'${
       errors.length > 0 ? ` with ${errors.length} error(s)` : ''

@@ -2,7 +2,7 @@
  * @fileoverview Update project brief based on processed responses
  */
 
-import { InterviewStageType, ProjectBrief } from '../types/interview-types.js';
+import { InterviewStageType, type ProjectBrief } from '../types/interview-types.js';
 
 /**
  * Update the project brief based on the processed response

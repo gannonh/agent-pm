@@ -8,8 +8,7 @@
  */
 import fs from 'fs/promises';
 import path from 'path';
-import { FileSystemError } from '../../types/errors.js';
-import { ErrorCode } from '../../types/errors.js';
+import { FileSystemError, ErrorCode } from '../../types/errors.js';
 import Config, { ARTIFACTS_DIR } from '../../config.js';
 
 /**

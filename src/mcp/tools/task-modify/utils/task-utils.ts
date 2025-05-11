@@ -2,7 +2,7 @@
  * Utility functions for task modification
  */
 import { MCPValidationError } from '../../../errors/index.js';
-import { Task } from '../../../types/index.js';
+import type { Task } from '../../../types/index.js';
 
 /**
  * Creates a new task object with the specified properties

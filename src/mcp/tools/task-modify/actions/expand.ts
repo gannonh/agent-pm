@@ -16,7 +16,7 @@ import { schemas, validateParams } from '../../../validation/index.js';
 import { MCPError, MCPNotFoundError, MCPValidationError } from '../../../errors/index.js';
 import { create_success_payload } from '../../../utils/response.js';
 import { ErrorCode } from '../../../../types/errors.js';
-import Config, {
+import config, {
   ANTHROPIC_TEMPERATURE,
   ANTHROPIC_MAX_TOKENS,
   PRODUCT_BRIEF_FILE,
@@ -57,7 +57,7 @@ export async function handleExpand(
 
   // Validate parameters
   const validatedParams = validateParams(params, expandSchema);
-  const { id, num, force, prompt, research: _research, file } = validatedParams;
+  const { id, num, force, prompt, file } = validatedParams;
 
   // Read tasks from file
   const tasksData = await readTasksFile(projectRoot, file);
@@ -241,9 +241,9 @@ Details: ${taskDetails.details}
         // If no URI, try to find a project brief file in the resources directory
         const fs = await import('fs/promises');
         const path = await import('path');
-        const Config = (await import('../../../../config.js')).default;
+        const config = (await import('../../../../config.js')).default;
 
-        const artifactsDir = Config.getArtifactsDir(projectRoot);
+        const artifactsDir = config.getArtifactsDir(projectRoot);
         const resourcesDir = path.join(artifactsDir, 'resources', 'project-brief');
         const markdownPath = path.join(artifactsDir, PRODUCT_BRIEF_FILE);
 
@@ -285,7 +285,7 @@ Details: ${taskDetails.details}
         }
 
         // Helper function to update the markdown file directly
-        async function updateMarkdownDirectly() {
+        async function updateMarkdownDirectly(): Promise<void> {
           try {
             // Check if the markdown file exists
             await fs.access(markdownPath);
@@ -351,7 +351,7 @@ Details: ${taskDetails.details}
       {
         task,
         subtasksAdded: subtasks.length,
-        tasksPath: file || Config.getArtifactsFile(projectRoot),
+        tasksPath: file || config.getArtifactsFile(projectRoot),
       },
       `Expanded task ${id} into ${subtasks.length} subtasks`,
       {

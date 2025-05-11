@@ -6,12 +6,10 @@
  *
  * @module core/utils/serialization
  */
-import { Task, Subtask, TasksData } from '../../types/task.js';
-import { TaskSchema, SubtaskSchema, TasksDataSchema } from '../../types/validation.js';
-import { FileSystemError } from '../../types/errors.js';
-import { ErrorCode } from '../../types/errors.js';
+import type { Task, Subtask, TasksData } from '../../types/task.js';
+import { taskSchema, subtaskSchema, tasksDataSchema } from '../../types/validation.js';
+import { FileSystemError, ErrorCode, ValidationError } from '../../types/errors.js';
 import { z } from 'zod';
-import { ValidationError } from '../../types/errors.js';
 
 /**
  * Serialize a task to a markdown string
@@ -248,7 +246,7 @@ export function parseTaskFromMarkdown(markdown: string): Task {
     };
 
     // Validate the task
-    return TaskSchema.parse(task);
+    return taskSchema.parse(task);
   } catch (error) {
     throw new FileSystemError(
       `Error parsing task from markdown: ${(error as Error).message}`,
@@ -266,7 +264,7 @@ export function parseTaskFromMarkdown(markdown: string): Task {
  */
 export function validateTask(task: Task): Task {
   try {
-    return TaskSchema.parse(task);
+    return taskSchema.parse(task);
   } catch (error) {
     throw new FileSystemError(
       `Invalid task: ${(error as Error).message}`,
@@ -284,7 +282,7 @@ export function validateTask(task: Task): Task {
  */
 export function validateSubtask(subtask: Subtask): Subtask {
   try {
-    return SubtaskSchema.parse(subtask);
+    return subtaskSchema.parse(subtask);
   } catch (error) {
     throw new FileSystemError(
       `Invalid subtask: ${(error as Error).message}`,
@@ -302,7 +300,7 @@ export function validateSubtask(subtask: Subtask): Subtask {
  */
 export function validateTasksData(tasksData: TasksData): TasksData {
   try {
-    return TasksDataSchema.parse(tasksData);
+    return tasksDataSchema.parse(tasksData);
   } catch (error) {
     throw new FileSystemError(
       `Invalid tasks data: ${(error as Error).message}`,

@@ -5,20 +5,16 @@
  */
 
 import { z } from 'zod';
-import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { ResourceTemplate, type McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { logger } from '../../utils/logger.js';
 import { schemas, validateParams, getProjectRoot } from '../../validation/index.js';
-import { handleError, MCPErrorResponse } from '../../errors/handler.js';
+import { handleError, type MCPErrorResponse } from '../../errors/handler.js';
 import { create_success_payload, create_async_operation_payload } from '../../utils/response.js';
 import { mcpAsyncOperationManager } from '../../async/manager.js';
-import { OperationProgress } from '../../../core/utils/async-manager.js';
-// These imports are used in other parts of the file
-import _fs from 'fs/promises';
-import _path from 'path';
-import _Config from '../../../config.js';
-import { resourceStorage, MCPResource } from '../../../core/services/ResourceStorage.js';
-import { interviewService } from '../../../core/services/InterviewService.js';
+import type { OperationProgress } from '../../../core/utils/async-manager.js';
 import { ARTIFACTS_DIR } from '../../../config.js';
+import { resourceStorage, type MCPResource } from '../../../core/services/ResourceStorage.js';
+import { interviewService } from '../../../core/services/InterviewService.js';
 
 /**
  * Project brief resource type
@@ -298,8 +294,7 @@ export function registerCreateProjectBriefTool(server: McpServer): void {
           sessionId,
           input,
           stage,
-          response: _response, // Prefix with underscore to indicate it's not used yet
-          exportFormat: _exportFormat, // Prefix with underscore to indicate it's not used yet
+          // response and exportFormat are not used in this context
           maxTasks,
         } = validatedParams;
 

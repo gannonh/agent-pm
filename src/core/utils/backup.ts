@@ -9,8 +9,7 @@ import path from 'path';
 import { copyFile, fileExists } from './fs.js';
 import { ensureDirectoryExists, getBackupDirectoryPath } from './path.js';
 // AppConfig import removed as it's no longer needed
-import { FileSystemError } from '../../types/errors.js';
-import { ErrorCode } from '../../types/errors.js';
+import { FileSystemError, ErrorCode } from '../../types/errors.js';
 
 /**
  * Creates a backup of a specified file with a timestamp-based name.

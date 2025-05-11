@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { TasksData, Task } from '../types/index.js';
+import type { TasksData, Task } from '../types/index.js';
 import { logger } from './logger.js';
 import Config, { PROJECT_ROOT } from '../../config.js';
 

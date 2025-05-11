@@ -7,8 +7,7 @@
 import OpenAI from 'openai';
 import { LRUCache } from 'lru-cache';
 import { logger } from '../mcp/utils/logger.js';
-import { AIError } from '../types/errors.js';
-import { ErrorCode } from '../types/errors.js';
+import { AIError, ErrorCode } from '../types/errors.js';
 import {
   PERPLEXITY_API_KEY,
   PERPLEXITY_MODEL,

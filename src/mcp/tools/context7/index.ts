@@ -3,7 +3,7 @@
  * These tools allow retrieving up-to-date documentation for libraries and technologies.
  */
 import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { searchLibraries, fetchLibraryDocumentation } from '../../../context7/lib/api.js';
 import { formatSearchResults } from '../../../context7/lib/utils.js';
 import { logger } from '../../utils/logger.js';

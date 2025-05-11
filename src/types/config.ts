@@ -61,7 +61,7 @@ export interface AppConfig {
 /**
  * Zod schema for AI model configuration
  */
-export const AIModelConfigSchema = z.object({
+export const aiModelConfigSchema = z.object({
   provider: z.enum(['anthropic', 'openai']),
   model: z.string(),
   apiKey: z.string(),
@@ -72,7 +72,7 @@ export const AIModelConfigSchema = z.object({
 /**
  * Zod schema for file system configuration
  */
-export const FileSystemConfigSchema = z.object({
+export const fileSystemConfigSchema = z.object({
   tasksDir: z.string(),
   scriptsDir: z.string(),
   tasksFile: z.string(),
@@ -84,7 +84,7 @@ export const FileSystemConfigSchema = z.object({
 /**
  * Zod schema for MCP server configuration
  */
-export const MCPServerConfigSchema = z.object({
+export const mcpServerConfigSchema = z.object({
   port: z.number().int().positive(),
   host: z.string(),
   enableLogging: z.boolean(),
@@ -96,7 +96,7 @@ export const MCPServerConfigSchema = z.object({
 /**
  * Zod schema for project information
  */
-export const ProjectInfoSchema = z.object({
+export const projectInfoSchema = z.object({
   name: z.string(),
   version: z.string(),
 });
@@ -104,16 +104,16 @@ export const ProjectInfoSchema = z.object({
 /**
  * Zod schema for application configuration
  */
-export const AppConfigSchema = z.object({
+export const appConfigSchema = z.object({
   projectName: z.string(),
   projectVersion: z.string(),
   defaultSubtasks: z.number().int().positive(),
   defaultPriority: z.enum(['high', 'medium', 'low']),
-  ai: AIModelConfigSchema,
-  fileSystem: FileSystemConfigSchema,
-  mcpServer: MCPServerConfigSchema,
+  ai: aiModelConfigSchema,
+  fileSystem: fileSystemConfigSchema,
+  mcpServer: mcpServerConfigSchema,
   debug: z.boolean(),
-  project: ProjectInfoSchema.optional(),
+  project: projectInfoSchema.optional(),
 });
 
 // Default configuration has been moved to src/config.ts

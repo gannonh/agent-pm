@@ -3,12 +3,12 @@
  */
 
 import { logger } from '../../mcp/utils/logger.js';
-import { AnthropicClient, AnthropicMessage } from '../anthropic-client.js';
-import { ProjectBrief, InterviewError } from '../types/interview-types.js';
+import type { AnthropicClient, AnthropicMessage } from '../anthropic-client.js';
+import { InterviewError, type ProjectBrief } from '../types/interview-types.js';
 import { resourceStorage } from './ResourceStorage.js';
-import { Task as CoreTask } from '../../types/task.js';
-import { Task as McpTask, TasksData } from '../../mcp/types/index.js';
-import {
+import type { Task as CoreTask } from '../../types/task.js';
+import type { Task as McpTask, TasksData } from '../../mcp/types/index.js';
+import config, {
   ANTHROPIC_TEMPERATURE,
   ANTHROPIC_MAX_TOKENS,
   ARTIFACTS_DIR,
@@ -78,15 +78,14 @@ interface TasksDataInput {
 }
 
 import {
-  ProjectAnalysis,
-  TaskStructure,
-  DetailedTasks,
-  TaskGenerationResult,
   TaskGenerationStage,
+  type ProjectAnalysis,
+  type TaskStructure,
+  type DetailedTasks,
+  type TaskGenerationResult,
 } from '../types/task-generation.js';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import Config from '../../config.js';
 
 /**
  * Stage 1: Analyze the project brief to identify software development components
@@ -799,7 +798,7 @@ export async function addTaskDetails(
 ): Promise<DetailedTasks> {
   try {
     const startTime = Date.now();
-    const getElapsedTime = () => {
+    const getElapsedTime = (): string => {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const minutes = Math.floor(elapsed / 60);
       const seconds = elapsed % 60;
@@ -819,7 +818,7 @@ export async function addTaskDetails(
     let completedBatches = 0;
 
     // Function to estimate remaining time based on completed batches
-    const estimateTimeRemaining = (startTime: number, completed: number, total: number) => {
+    const estimateTimeRemaining = (startTime: number, completed: number, total: number): string => {
       if (completed === 0) return 'calculating...';
 
       const elapsedMs = Date.now() - startTime;
@@ -1194,7 +1193,7 @@ export async function generateTaskFiles(
   try {
     // Get project root from the project brief URI
     const projectBrief = await resourceStorage.loadResource<ProjectBrief>(projectBriefUri);
-    const projectRoot = Config.getProjectRoot();
+    const projectRoot = config.getProjectRoot();
 
     // Import necessary utilities
     const { writeTasksFile, generateTaskFiles: generateFiles } = await import(
@@ -1202,7 +1201,7 @@ export async function generateTaskFiles(
     );
 
     // Write the tasks.json file
-    const tasksFilePath = Config.getArtifactsFile(projectRoot);
+    const tasksFilePath = config.getArtifactsFile(projectRoot);
 
     // Create the tasks data structure
     const tasksData: TasksData = {
@@ -1282,7 +1281,7 @@ async function generateMarkdown(projectBriefUri: string, tasksData: unknown): Pr
   try {
     // Load the project brief
     const projectBrief = await resourceStorage.loadResource<ProjectBrief>(projectBriefUri);
-    const projectRoot = Config.getProjectRoot();
+    const projectRoot = config.getProjectRoot();
 
     // Create the Markdown content
     let markdown = `# ${projectBrief.title}\n\n`;

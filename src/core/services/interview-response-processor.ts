@@ -3,12 +3,12 @@
  */
 
 import { logger } from '../../mcp/utils/logger.js';
-import { AnthropicClient, AnthropicMessage } from '../anthropic-client.js';
+import type { AnthropicClient, AnthropicMessage } from '../anthropic-client.js';
 import {
   InterviewStageType,
-  ProjectBrief,
-  InterviewState,
   InterviewError,
+  type ProjectBrief,
+  type InterviewState,
 } from '../types/interview-types.js';
 import { stageDefinitions } from './interview-stages.js';
 
@@ -25,7 +25,7 @@ export async function processStageResponse(
   stage: InterviewStageType,
   userResponse: string,
   projectBrief: ProjectBrief,
-  interviewState: InterviewState,
+  _interviewState: InterviewState,
   anthropicClient: AnthropicClient
 ): Promise<{
   title?: string;

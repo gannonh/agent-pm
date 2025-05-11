@@ -237,7 +237,7 @@ export async function handleAddSubtask(
         }
 
         // Helper function to update the markdown file directly
-        async function updateMarkdownDirectly() {
+        async function updateMarkdownDirectly(): Promise<void> {
           try {
             // Check if the markdown file exists
             await fs.access(markdownPath);

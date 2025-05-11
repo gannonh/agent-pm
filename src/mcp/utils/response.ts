@@ -13,7 +13,7 @@
 
 import { sessionManager } from '../session/manager.js';
 import { logger } from './logger.js';
-import { MCPErrorResponse } from '../errors/handler.js';
+import type { MCPErrorResponse } from '../errors/handler.js';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
@@ -245,7 +245,7 @@ export function createEnhancedResponse(options: EnhancedResponseOptions): string
           } else {
             sessionContext = session.context;
           }
-        } catch (_error) {
+        } catch {
           // Session not found, create a new one
           const session = sessionManager.createSession({
             initialContext: context || {},
@@ -265,9 +265,9 @@ export function createEnhancedResponse(options: EnhancedResponseOptions): string
         });
         logger.debug(`Added operation to session: ${responseSessionId}, operation: ${operationId}`);
       }
-    } catch (_error) {
+    } catch (error) {
       // Log the error but don't fail the response
-      logger.error(`Error managing session: ${_error}`);
+      logger.error(`Error managing session: ${error}`);
     }
   }
 
@@ -481,7 +481,7 @@ export function create_async_operation_payload(
     // For operations that are still running
     // Check if we have time estimates in the metadata
     const timeEstimate = options.metadata?.estimatedTimeRemaining as number | undefined;
-    const _estimatedEndTime = options.metadata?.estimatedEndTime as number | undefined; // Unused for now, but could be used to show absolute time
+    // const estimatedEndTime = options.metadata?.estimatedEndTime as number | undefined; // Unused for now, but could be used to show absolute time
     const progress = options.metadata?.progress as number | undefined;
     const currentStep = options.metadata?.currentStep as string | undefined;
     const totalSteps = options.metadata?.totalSteps as number | undefined;

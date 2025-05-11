@@ -3,7 +3,7 @@
  * Provides interfaces and types for the MCP-specific async operation management.
  */
 
-import { OperationStatus as CoreOperationStatus } from '../../core/utils/async-manager.js';
+import type { OperationStatus as CoreOperationStatus } from '../../core/utils/async-manager.js';
 
 /**
  * Represents the current state of an MCP async operation.
