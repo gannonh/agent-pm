@@ -1,4 +1,5 @@
 # AgentPM
+[![smithery badge](https://smithery.ai/badge/@gannonh/agent-pm)](https://smithery.ai/server/@gannonh/agent-pm)
 
 AgentPM is a planning and orchestration system for AI-driven software development. Installed locally as an MCP server, it integrates with any IDE that supports Anthropic's Model Context Protocol specification, including Cursor, Augment, VS Code Copilot, Cline and Roo.
 
