@@ -1,0 +1,33 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - anthropicApiKey
+    properties:
+      projectRoot:
+        type: string
+        default: .
+        description: Path to the project directory
+      anthropicApiKey:
+        type: string
+        description: API key for Claude AI integration
+      perplexityApiKey:
+        type: string
+        description: API key for Perplexity AI integration
+      debugLogs:
+        type: boolean
+        default: false
+        description: Enable debug mode with file logging
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({command: 'node', args: ['dist/index.js'], env: {PROJECT_ROOT: config.projectRoot, ANTHROPIC_API_KEY: config.anthropicApiKey, PERPLEXITY_API_KEY: config.perplexityApiKey || '', DEBUG_LOGS: config.debugLogs ? 'true' : 'false'}})
+  exampleConfig:
+    projectRoot: .
+    anthropicApiKey: sk-test-anthropic
+    perplexityApiKey: pplx-test-perplexity
+    debugLogs: false
