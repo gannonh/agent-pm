@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/gannonh-agent-pm-badge.png)](https://mseep.ai/app/gannonh-agent-pm)
+
 # AgentPM
 [![smithery badge](https://smithery.ai/badge/@gannonh/agent-pm)](https://smithery.ai/server/@gannonh/agent-pm)
 
